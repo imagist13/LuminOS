@@ -61,7 +61,6 @@ services:
     - use-vc
     environment:
       TZ: ${TZ:-Asia/Shanghai}
-      JX_EDITION: ${JX_EDITION:-ce}
       BRAND_PRODUCT_NAME: ${BRAND_PRODUCT_NAME:-LuminOS}
       BRAND_ORG_NAME: ${BRAND_ORG_NAME:-}
       BRAND_POWERED_BY: ${BRAND_POWERED_BY:-true}
@@ -360,7 +359,6 @@ services:
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL}
         SSO_LOGIN_URL: ${SSO_LOGIN_URL:-}
-        VITE_EDITION: ${VITE_EDITION:-ce}
         VITE_DEFAULT_LANGUAGE: ${VITE_DEFAULT_LANGUAGE:-zh-CN}
         VITE_UPLOAD_MAX_MB: ${UPLOAD_MAX_MB:-50}
     container_name: luminos-frontend
