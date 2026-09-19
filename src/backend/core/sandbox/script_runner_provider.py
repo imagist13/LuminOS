@@ -1,4 +1,4 @@
-"""ScriptRunnerProvider — wraps HTTP calls to the existing hugagent-script-runner container.
+﻿"""ScriptRunnerProvider — wraps HTTP calls to the existing luminos-script-runner container.
 
 Behavior:
 - 2 ReadTimeout retries
@@ -47,7 +47,7 @@ def _connect_error_message() -> str:
             f"本机代码执行服务不可达（{settings.sandbox.runner_url}），已尝试自动恢复；"
             "稍候重试，若持续失败请重启客户端"
         )
-    return "无法连接脚本执行服务 (hugagent-script-runner)，请检查容器是否运行"
+    return "无法连接脚本执行服务 (luminos-script-runner)，请检查容器是否运行"
 
 
 class ScriptRunnerProvider:

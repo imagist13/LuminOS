@@ -1,4 +1,4 @@
-"""Helpers for exporting and importing editable docs content blocks."""
+﻿"""Helpers for exporting and importing editable docs content blocks."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from core.db.models import ContentBlock
 from sqlalchemy.orm import Session
 
 # Branding source of truth (seam C7): in-code defaults stay neutral; the concrete
-# brand (e.g. "HugAgentOS") is injected via env BRAND_PRODUCT_NAME / the deploy-time
+# brand (e.g. "LuminOS") is injected via env BRAND_PRODUCT_NAME / the deploy-time
 # content_blocks DB seed.
 _BRAND_NAME = settings.branding.product_name
 
@@ -259,7 +259,7 @@ def enforce_ce_branding(db: Session) -> bool:
     if row is None or not isinstance(row.payload, dict):
         return False
 
-    product_name = "HugAgentOS"
+    product_name = "LuminOS"
     payload = dict(row.payload)
     branding = dict(payload.get("branding") or {})
     navigation = dict(payload.get("navigation") or {})

@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+﻿import { spawnSync } from "node:child_process";
 import {
   chmodSync,
   copyFileSync,
@@ -12,7 +12,7 @@ import {
 } from "node:fs";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 
-export const CE_EDITION_MARKER = ".hugagent-edition";
+export const CE_EDITION_MARKER = ".luminos-edition";
 
 function git(repoRoot, args, options = {}) {
   const result = spawnSync("git", args, {

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """streamable-http MCP server：定时任务管理（创建/查看/修改/暂停/恢复/删除）。
 
 用户身份与渠道上下文经 HTTP 头注入（由后端 agent_factory 设置）：
@@ -17,7 +17,7 @@ from mcp.server.fastmcp import Context, FastMCP
 
 from mcp_servers.automation_task_mcp import impl
 
-mcp = FastMCP("hugagent-automation-task")
+mcp = FastMCP("luminos-automation-task")
 
 _HDR_USER = "x-current-user-id"
 _HDR_CHANNEL = "x-channel-id"

@@ -1,4 +1,4 @@
-"""API layer for HugAgentOS."""
+﻿"""API layer for LuminOS."""
 
 from .app import app
 

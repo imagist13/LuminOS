@@ -1,4 +1,4 @@
-"""Path resolution helpers shared by Read / Edit / Write / Glob / Grep.
+﻿"""Path resolution helpers shared by Read / Edit / Write / Glob / Grep.
 
 Design principles (B+in-place+immediate+/scratch):
 
@@ -41,7 +41,7 @@ MYSPACE_LOGICAL = "/myspace"
 
 # Model-facing paths are written against the container-canonical ``/workspace``
 # root — the system prompt, skill text, and plugin scripts all say ``/workspace``.
-# In the no-Docker local profile the real root differs (e.g. ~/.hugagent/workspace),
+# In the no-Docker local profile the real root differs (e.g. ~/.luminos/workspace),
 # so alias a leading ``/workspace`` → WORKSPACE_ROOT at the one chokepoint every
 # file tool passes through. No-op (byte-identical) when WORKSPACE_ROOT == /workspace.
 _CANON_WS = "/workspace"

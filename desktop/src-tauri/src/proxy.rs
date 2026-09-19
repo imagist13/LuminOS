@@ -1,4 +1,4 @@
-//! 本地反向代理（方案 B 核心）。
+﻿//! 本地反向代理（方案 B 核心）。
 //!
 //! WebView 始终访问 `http://127.0.0.1:<随机端口>`，因此：
 //!   - 前端打包产物（`/`、`/icons/...` 等静态资源）由本地反代直接提供；
@@ -45,7 +45,7 @@ pub struct ProxyState {
     pub cloud_server_base: String,
     /// 混合架构（Dual）：本机执行面地址（端口由构建期品牌配置决定）。
     pub local_base: String,
-    /// 仅 Dual 为 true：启用按请求路由（x-hugagent-target: local → 本机）。
+    /// 仅 Dual 为 true：启用按请求路由（x-luminos-target: local → 本机）。
     pub hybrid_local: bool,
     /// 桥接秘密：本机路由请求注入 `X-Desktop-Bridge` 证明来自壳。
     pub bridge_secret: String,
@@ -57,7 +57,7 @@ pub struct ProxyState {
 }
 
 /// 前端标记「该请求属于本地项目」的头；反代读取后剥离，不透传给任何后端。
-pub const TARGET_HEADER: &str = "x-hugagent-target";
+pub const TARGET_HEADER: &str = "x-luminos-target";
 /// 桥接头（注入本机路由请求；来自 WebView 的同名头一律剥离防伪造）。
 pub const BRIDGE_SECRET_HEADER: &str = "x-desktop-bridge";
 pub const BRIDGE_USER_HEADER: &str = "x-desktop-bridge-user";
@@ -70,7 +70,7 @@ pub async fn serve(state: ProxyState, web_dir: PathBuf) -> std::io::Result<u16> 
     let raw_index = std::fs::read_to_string(&index).unwrap_or_default();
     let injected_index = inject_after_body(&raw_index, &platform_titlebar_block(true));
     let injected_path =
-        std::env::temp_dir().join(format!("hugagent-shell-index-{}.html", std::process::id()));
+        std::env::temp_dir().join(format!("luminos-shell-index-{}.html", std::process::id()));
     if let Err(error) = std::fs::write(&injected_path, injected_index.as_bytes()) {
         eprintln!("[proxy] 写入桌面标题栏首页失败，回退原始 index: {error}");
     }
@@ -138,7 +138,7 @@ async fn proxy_handler(State(state): State<ProxyState>, req: Request<Body>) -> R
 
     let path_q = uri.path_and_query().map(|p| p.as_str()).unwrap_or("/");
 
-    // 混合架构（Dual）：前端给「本地项目」的请求打 x-hugagent-target: local，
+    // 混合架构（Dual）：前端给「本地项目」的请求打 x-luminos-target: local，
     // 反代把它们转到当前品牌的本机执行面，其余一律云端。单一形态不路由。
     // <img>/<iframe> 等 src 场景无法带请求头，等价支持 query 参数 ?hg_target=local。
     let to_local = state.hybrid_local && !is_cloud_site_path(uri.path())
@@ -261,7 +261,7 @@ async fn proxy_handler(State(state): State<ProxyState>, req: Request<Body>) -> R
 async fn login_page() -> Html<String> {
     // 品牌名 / logo 走编译期可配（brand.rs）——默认，构建时环境变量可覆盖。
     let html = LOGIN_HTML
-        .replace("HugAgentOS", brand::NAME)
+        .replace("LuminOS", brand::NAME)
         .replace("/icon.png", brand::LOGIN_LOGO_URL);
     Html(inject_after_body(
         &with_theme_boot(&html),
@@ -273,7 +273,7 @@ async fn login_page() -> Html<String> {
 /// `/__desktop/close-decide?action=..&remember=..`，由确认窗的 Rust 导航守卫执行。
 async fn close_confirm_page() -> Html<String> {
     Html(with_theme_boot(
-        &CLOSE_CONFIRM_HTML.replace("HugAgentOS", brand::NAME),
+        &CLOSE_CONFIRM_HTML.replace("LuminOS", brand::NAME),
     ))
 }
 
@@ -283,7 +283,7 @@ async fn close_confirm_page() -> Html<String> {
 async fn server_config_page(State(state): State<ProxyState>) -> Html<String> {
     let html = SERVER_CONFIG_HTML
         .replace("__CURRENT_BASE__", &html_escape(&state.server_base))
-        .replace("HugAgentOS", brand::NAME);
+        .replace("LuminOS", brand::NAME);
     Html(inject_after_body(
         &with_theme_boot(&html),
         &platform_titlebar_block(false),
@@ -324,7 +324,7 @@ async fn setup_page(State(state): State<ProxyState>) -> Html<String> {
                 "linux"
             },
         )
-        .replace("HugAgentOS", brand::NAME);
+        .replace("LuminOS", brand::NAME);
     Html(inject_after_body(
         &with_theme_boot(&html),
         &platform_titlebar_block(false),
@@ -378,7 +378,7 @@ async fn init_page(State(state): State<ProxyState>) -> Html<String> {
                 "linux"
             },
         )
-        .replace("HugAgentOS", brand::NAME);
+        .replace("LuminOS", brand::NAME);
     Html(inject_after_body(
         &with_theme_boot(&html),
         &platform_titlebar_block(false),
@@ -407,7 +407,7 @@ fn fixed_init_page() -> Html<String> {
                 "linux"
             },
         )
-        .replace("HugAgentOS", brand::NAME);
+        .replace("LuminOS", brand::NAME);
     Html(inject_after_body(
         &with_theme_boot(&html),
         &platform_titlebar_block(false),
@@ -460,9 +460,9 @@ fn html_escape(s: &str) -> String {
 
 const TITLEBAR_HEIGHT: u8 = 34;
 const TB_OFFSET_SPA: &str =
-    ":root{--hugagent-desktop-titlebar-height:34px;--hugagent-desktop-sidebar-width:280px;--hugagent-desktop-sidebar-chrome:color-mix(in srgb, var(--color-bg-gray) 72%, transparent)}:root[data-theme='dark']{--hugagent-desktop-sidebar-chrome:var(--color-bg-layout)}body{box-sizing:border-box!important;padding-top:0!important}.jx-appMainLayout{box-sizing:border-box!important;padding-top:var(--hugagent-desktop-titlebar-height)!important}.jx-brandRow{padding-top:50px!important}.jx-miniRail{padding-top:48px!important}.jx-appLoading{height:100%!important}.jx-appLoading-main{box-sizing:border-box!important;padding-top:calc(40px + var(--hugagent-desktop-titlebar-height))!important}.ant-message{top:calc(var(--hugagent-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--hugagent-desktop-titlebar-height) + 24px)!important}";
+    ":root{--luminos-desktop-titlebar-height:34px;--luminos-desktop-sidebar-width:280px;--luminos-desktop-sidebar-chrome:color-mix(in srgb, var(--color-bg-gray) 72%, transparent)}:root[data-theme='dark']{--luminos-desktop-sidebar-chrome:var(--color-bg-layout)}body{box-sizing:border-box!important;padding-top:0!important}.jx-appMainLayout{box-sizing:border-box!important;padding-top:var(--luminos-desktop-titlebar-height)!important}.jx-brandRow{padding-top:50px!important}.jx-miniRail{padding-top:48px!important}.jx-appLoading{height:100%!important}.jx-appLoading-main{box-sizing:border-box!important;padding-top:calc(40px + var(--luminos-desktop-titlebar-height))!important}.ant-message{top:calc(var(--luminos-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--luminos-desktop-titlebar-height) + 24px)!important}";
 const TB_OFFSET_PAGE: &str =
-    ":root{--hugagent-desktop-titlebar-height:34px;--hugagent-desktop-sidebar-width:280px;--hugagent-desktop-sidebar-chrome:var(--color-bg-layout)}body{box-sizing:border-box!important;padding-top:34px!important}.ant-message{top:calc(var(--hugagent-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--hugagent-desktop-titlebar-height) + 24px)!important}";
+    ":root{--luminos-desktop-titlebar-height:34px;--luminos-desktop-sidebar-width:280px;--luminos-desktop-sidebar-chrome:var(--color-bg-layout)}body{box-sizing:border-box!important;padding-top:34px!important}.ant-message{top:calc(var(--luminos-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--luminos-desktop-titlebar-height) + 24px)!important}";
 
 // The traffic lights start at y=13 and occupy about 14px. A 28px overlay keeps
 // their hit area clear without stacking a second, visibly empty toolbar above
@@ -476,39 +476,39 @@ const MAC_TITLEBAR_HEIGHT: u8 = 28;
 // `!important` 把整个 body 底色摁回浅色 —— 深色模式在 macOS 客户端里直接不成立。
 // 改引令牌后两档自动跟随，侧边栏配方再变也只需要改 sidebar.css 一处。
 const MAC_OFFSET_SPA: &str =
-    ":root{--hugagent-desktop-titlebar-height:28px;--hugagent-desktop-sidebar-width:0px}body{box-sizing:border-box!important;padding-top:28px!important;background:linear-gradient(90deg,color-mix(in srgb, var(--color-bg-gray) 72%, transparent) 0 var(--hugagent-desktop-sidebar-width),var(--color-bg-base) var(--hugagent-desktop-sidebar-width) 100%),var(--color-bg-layout)!important}.jx-brandRow,.jx-miniRail{padding-top:0!important}.jx-appLoading{height:100%!important}.ant-message{top:calc(var(--hugagent-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--hugagent-desktop-titlebar-height) + 24px)!important}";
+    ":root{--luminos-desktop-titlebar-height:28px;--luminos-desktop-sidebar-width:0px}body{box-sizing:border-box!important;padding-top:28px!important;background:linear-gradient(90deg,color-mix(in srgb, var(--color-bg-gray) 72%, transparent) 0 var(--luminos-desktop-sidebar-width),var(--color-bg-base) var(--luminos-desktop-sidebar-width) 100%),var(--color-bg-layout)!important}.jx-brandRow,.jx-miniRail{padding-top:0!important}.jx-appLoading{height:100%!important}.ant-message{top:calc(var(--luminos-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--luminos-desktop-titlebar-height) + 24px)!important}";
 const MAC_OFFSET_PAGE: &str =
-    ":root{--hugagent-desktop-titlebar-height:28px}body{box-sizing:border-box!important;padding-top:28px!important}.ant-message{top:calc(var(--hugagent-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--hugagent-desktop-titlebar-height) + 24px)!important}";
+    ":root{--luminos-desktop-titlebar-height:28px}body{box-sizing:border-box!important;padding-top:28px!important}.ant-message{top:calc(var(--luminos-desktop-titlebar-height) + 8px)!important}.ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight{top:calc(var(--luminos-desktop-titlebar-height) + 24px)!important}";
 
 // 这条标题栏是**注进 SPA 自己那份文档**的（见 inject_after_body），所以 `<html>` 上的
 // data-theme 对它同样生效，直接引用应用令牌即可两档自动跟随 —— 不需要再写一套深色覆盖，
 // 也不需要 prefers-color-scheme（那会和手动 light/dark/system 三档打架）。
 const TB_CSS: &str = r##"
-#hugagent-titlebar{position:fixed;inset:0 0 auto 0;height:34px;z-index:2147483647;display:flex;align-items:stretch;background:linear-gradient(var(--hugagent-desktop-sidebar-chrome),var(--hugagent-desktop-sidebar-chrome)),var(--color-bg-layout);border:0;box-shadow:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--color-text);-webkit-user-select:none;user-select:none}
-#hugagent-titlebar *{box-sizing:border-box}
-#hugagent-titlebar .tb-sidebarZone{flex:0 0 var(--hugagent-desktop-sidebar-width);min-width:max-content;height:100%;padding:0 6px;display:flex;align-items:center;gap:2px;background:transparent;transition:flex-basis .16s ease;overflow:visible}
-#hugagent-titlebar .tb-mainChrome{flex:1;min-width:0;height:100%;display:flex;align-items:center;background:transparent;border:0}
-#hugagent-titlebar .tb-spacer{flex:1;height:100%;min-width:48px}
-#hugagent-titlebar .tb-menu{display:flex;align-items:stretch;height:100%;flex:0 0 auto}
-#hugagent-titlebar .tb-menuGroup{position:relative;height:100%;display:flex;align-items:stretch}
-#hugagent-titlebar .tb-menuLabel{height:26px;margin:4px 0;padding:0 7px;border:0;border-radius:6px;background:transparent;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:12px;line-height:1;cursor:default}
-#hugagent-titlebar .tb-menuLabel:hover,#hugagent-titlebar .tb-menuGroup.open>.tb-menuLabel{background:var(--color-fill-hover)}
-#hugagent-titlebar .tb-menuLabel:focus-visible,#hugagent-titlebar .tb-windowButton:focus-visible{outline:2px solid var(--color-primary);outline-offset:-3px}
-#hugagent-titlebar .tb-drop{display:none;position:absolute;top:32px;left:0;min-width:218px;padding:6px;background:var(--color-bg-elevated);border:1px solid var(--color-border);border-radius:8px;box-shadow:0 10px 28px color-mix(in srgb, var(--color-text) 16%, transparent)}
-#hugagent-titlebar .tb-menuGroup.open>.tb-drop{display:block}
-#hugagent-titlebar .tb-item{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;min-height:34px;padding:7px 11px;border:0;border-radius:6px;background:transparent;color:var(--color-text);font:13px/1.3 inherit;text-align:left;white-space:nowrap;cursor:default}
-#hugagent-titlebar .tb-item:hover,#hugagent-titlebar .tb-item:focus-visible{background:var(--color-primary-light);color:var(--color-primary);outline:none}
-#hugagent-titlebar .tb-shortcut{color:var(--color-text-tertiary);font-size:12px}
-#hugagent-titlebar .tb-sep{height:1px;margin:5px 6px;background:var(--color-border)}
-#hugagent-titlebar .tb-controls{display:flex;align-items:stretch;height:100%;margin-left:0}
-#hugagent-titlebar .tb-windowButton{width:46px;height:100%;padding:0;border:0;background:transparent;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;cursor:default}
-#hugagent-titlebar .tb-windowButton:hover{background:var(--color-fill-hover)}
+#luminos-titlebar{position:fixed;inset:0 0 auto 0;height:34px;z-index:2147483647;display:flex;align-items:stretch;background:linear-gradient(var(--luminos-desktop-sidebar-chrome),var(--luminos-desktop-sidebar-chrome)),var(--color-bg-layout);border:0;box-shadow:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;color:var(--color-text);-webkit-user-select:none;user-select:none}
+#luminos-titlebar *{box-sizing:border-box}
+#luminos-titlebar .tb-sidebarZone{flex:0 0 var(--luminos-desktop-sidebar-width);min-width:max-content;height:100%;padding:0 6px;display:flex;align-items:center;gap:2px;background:transparent;transition:flex-basis .16s ease;overflow:visible}
+#luminos-titlebar .tb-mainChrome{flex:1;min-width:0;height:100%;display:flex;align-items:center;background:transparent;border:0}
+#luminos-titlebar .tb-spacer{flex:1;height:100%;min-width:48px}
+#luminos-titlebar .tb-menu{display:flex;align-items:stretch;height:100%;flex:0 0 auto}
+#luminos-titlebar .tb-menuGroup{position:relative;height:100%;display:flex;align-items:stretch}
+#luminos-titlebar .tb-menuLabel{height:26px;margin:4px 0;padding:0 7px;border:0;border-radius:6px;background:transparent;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:12px;line-height:1;cursor:default}
+#luminos-titlebar .tb-menuLabel:hover,#luminos-titlebar .tb-menuGroup.open>.tb-menuLabel{background:var(--color-fill-hover)}
+#luminos-titlebar .tb-menuLabel:focus-visible,#luminos-titlebar .tb-windowButton:focus-visible{outline:2px solid var(--color-primary);outline-offset:-3px}
+#luminos-titlebar .tb-drop{display:none;position:absolute;top:32px;left:0;min-width:218px;padding:6px;background:var(--color-bg-elevated);border:1px solid var(--color-border);border-radius:8px;box-shadow:0 10px 28px color-mix(in srgb, var(--color-text) 16%, transparent)}
+#luminos-titlebar .tb-menuGroup.open>.tb-drop{display:block}
+#luminos-titlebar .tb-item{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;min-height:34px;padding:7px 11px;border:0;border-radius:6px;background:transparent;color:var(--color-text);font:13px/1.3 inherit;text-align:left;white-space:nowrap;cursor:default}
+#luminos-titlebar .tb-item:hover,#luminos-titlebar .tb-item:focus-visible{background:var(--color-primary-light);color:var(--color-primary);outline:none}
+#luminos-titlebar .tb-shortcut{color:var(--color-text-tertiary);font-size:12px}
+#luminos-titlebar .tb-sep{height:1px;margin:5px 6px;background:var(--color-border)}
+#luminos-titlebar .tb-controls{display:flex;align-items:stretch;height:100%;margin-left:0}
+#luminos-titlebar .tb-windowButton{width:46px;height:100%;padding:0;border:0;background:transparent;color:var(--color-text-secondary);display:flex;align-items:center;justify-content:center;cursor:default}
+#luminos-titlebar .tb-windowButton:hover{background:var(--color-fill-hover)}
 /* dark-ok: #E81123 是 Windows 关闭键的平台约定红，两档都得是这个红，不跟主题翻转 */
-#hugagent-titlebar .tb-windowButton.close:hover{background:#E81123;color:#fff}
+#luminos-titlebar .tb-windowButton.close:hover{background:#E81123;color:#fff}
 "##;
 
 const TB_MENU: &str = r##"<nav class="tb-menu" aria-label="应用菜单" data-i18n-aria="app_menu">
-<div class="tb-menuGroup" data-menu="file"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="hugagent-file-menu" data-i18n="file">文件</button><div class="tb-drop" id="hugagent-file-menu" role="menu" aria-label="文件" data-i18n-aria="file">
+<div class="tb-menuGroup" data-menu="file"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="luminos-file-menu" data-i18n="file">文件</button><div class="tb-drop" id="luminos-file-menu" role="menu" aria-label="文件" data-i18n-aria="file">
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-act="new_chat"><span data-i18n="new_chat">新建对话</span><span class="tb-shortcut" aria-hidden="true">Ctrl+N</span></button>
   <div class="tb-sep" role="separator"></div>
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-act="run_mode"><span data-i18n="run_mode">运行模式…</span></button>
@@ -517,7 +517,7 @@ const TB_MENU: &str = r##"<nav class="tb-menu" aria-label="应用菜单" data-i1
   <div class="tb-sep" role="separator"></div>
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-win="quit"><span data-i18n="quit">退出</span></button>
 </div></div>
-<div class="tb-menuGroup" data-menu="edit"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="hugagent-edit-menu" data-i18n="edit">编辑</button><div class="tb-drop" id="hugagent-edit-menu" role="menu" aria-label="编辑" data-i18n-aria="edit">
+<div class="tb-menuGroup" data-menu="edit"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="luminos-edit-menu" data-i18n="edit">编辑</button><div class="tb-drop" id="luminos-edit-menu" role="menu" aria-label="编辑" data-i18n-aria="edit">
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-edit="undo"><span data-i18n="undo">撤销</span><span class="tb-shortcut" aria-hidden="true">Ctrl+Z</span></button>
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-edit="redo"><span data-i18n="redo">重做</span><span class="tb-shortcut" aria-hidden="true">Ctrl+Y</span></button>
   <div class="tb-sep" role="separator"></div>
@@ -527,11 +527,11 @@ const TB_MENU: &str = r##"<nav class="tb-menu" aria-label="应用菜单" data-i1
   <div class="tb-sep" role="separator"></div>
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-edit="selectAll"><span data-i18n="select_all">全选</span><span class="tb-shortcut" aria-hidden="true">Ctrl+A</span></button>
 </div></div>
-<div class="tb-menuGroup" data-menu="view"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="hugagent-view-menu" data-i18n="view">视图</button><div class="tb-drop" id="hugagent-view-menu" role="menu" aria-label="视图" data-i18n-aria="view">
+<div class="tb-menuGroup" data-menu="view"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="luminos-view-menu" data-i18n="view">视图</button><div class="tb-drop" id="luminos-view-menu" role="menu" aria-label="视图" data-i18n-aria="view">
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-act="reload"><span data-i18n="reload">重新加载</span><span class="tb-shortcut" aria-hidden="true">Ctrl+R</span></button>
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-win="fullscreen"><span data-i18n="fullscreen">全屏</span><span class="tb-shortcut" aria-hidden="true">F11</span></button>
 </div></div>
-<div class="tb-menuGroup" data-menu="help"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="hugagent-help-menu" data-i18n="help">帮助</button><div class="tb-drop" id="hugagent-help-menu" role="menu" aria-label="帮助" data-i18n-aria="help">
+<div class="tb-menuGroup" data-menu="help"><button class="tb-menuLabel" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="luminos-help-menu" data-i18n="help">帮助</button><div class="tb-drop" id="luminos-help-menu" role="menu" aria-label="帮助" data-i18n-aria="help">
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-act="check_update"><span data-i18n="check_update">检查更新…</span></button>
   <button class="tb-item" type="button" role="menuitem" tabindex="-1" data-act="website"><span data-i18n="website">访问官网</span></button>
   <div class="tb-sep" role="separator"></div>
@@ -546,10 +546,10 @@ const TB_CONTROLS: &str = r##"<div class="tb-controls">
 </div>"##;
 
 const TB_JS: &str = r##"(function(){
-var bar=document.getElementById('hugagent-titlebar');if(!bar)return;
+var bar=document.getElementById('luminos-titlebar');if(!bar)return;
 // 快速问答使用独立原生小窗，不展示主窗口标题栏。
 if(new URLSearchParams(location.search).get('quickask')==='1'){
-  bar.remove();var style=document.getElementById('hugagent-titlebar-style');if(style)style.remove();return;
+  bar.remove();var style=document.getElementById('luminos-titlebar-style');if(style)style.remove();return;
 }
 var desktopCopy={
   'zh-CN':{
@@ -674,7 +674,7 @@ function setRootVar(name,value){
   lastRootVar[name]=value;document.documentElement.style.setProperty(name,value);
 }
 function syncSurfaceTint(){
-  setRootVar('--hugagent-desktop-sidebar-chrome',
+  setRootVar('--luminos-desktop-sidebar-chrome',
     sampleBg('.jx-sider')||sampleBg('.jx-appLoading-sidebar'));
 }
 function syncSidebarWidth(){
@@ -686,7 +686,7 @@ function syncSidebarWidth(){
   if(!sidebar)return;
   var rect=sidebar.getBoundingClientRect();
   var width=Math.max(0,Math.min(window.innerWidth,Math.round(rect.right)));
-  setRootVar('--hugagent-desktop-sidebar-width',width+'px');
+  setRootVar('--luminos-desktop-sidebar-width',width+'px');
 }
 var chromeSyncQueued=false;
 function scheduleChromeSync(){
@@ -705,14 +705,14 @@ bar.addEventListener('dblclick',function(event){if(isControl(event.target))retur
 // we only reserve a compact draggable title region for the traffic lights; a
 // second branded toolbar would duplicate the native chrome and waste space.
 const MAC_TB_CSS: &str = r##"
-#hugagent-mac-titlebar{position:fixed;inset:0 0 auto 0;height:28px;z-index:2147483647;background:transparent;border:0;box-shadow:none;-webkit-user-select:none;user-select:none}
-#hugagent-mac-titlebar *{box-sizing:border-box}
+#luminos-mac-titlebar{position:fixed;inset:0 0 auto 0;height:28px;z-index:2147483647;background:transparent;border:0;box-shadow:none;-webkit-user-select:none;user-select:none}
+#luminos-mac-titlebar *{box-sizing:border-box}
 "##;
 
 const MAC_TB_JS: &str = r##"(function(){
-var bar=document.getElementById('hugagent-mac-titlebar');if(!bar)return;
+var bar=document.getElementById('luminos-mac-titlebar');if(!bar)return;
 if(new URLSearchParams(location.search).get('quickask')==='1'){
-  bar.remove();var style=document.getElementById('hugagent-titlebar-style');if(style)style.remove();return;
+  bar.remove();var style=document.getElementById('luminos-titlebar-style');if(style)style.remove();return;
 }
 var observedSidebar=null;
 var sidebarResizeObserver=typeof ResizeObserver==='function'?new ResizeObserver(syncSidebarWidth):null;
@@ -723,7 +723,7 @@ function syncSidebarWidth(){
     observedSidebar=sidebar;sidebarResizeObserver.observe(sidebar);
   }
   var width=sidebar?Math.max(0,Math.round(sidebar.getBoundingClientRect().width)):0;
-  document.documentElement.style.setProperty('--hugagent-desktop-sidebar-width',width+'px');
+  document.documentElement.style.setProperty('--luminos-desktop-sidebar-width',width+'px');
 }
 syncSidebarWidth();
 new MutationObserver(syncSidebarWidth).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
@@ -751,8 +751,8 @@ fn titlebar_menu_for(hybrid_only: bool) -> String {
 
 fn titlebar_block(offset_css: &str) -> String {
     format!(
-        "<style id=\"hugagent-titlebar-style\">{css}{offset}</style>\
-<header id=\"hugagent-titlebar\" data-height=\"{height}\">\
+        "<style id=\"luminos-titlebar-style\">{css}{offset}</style>\
+<header id=\"luminos-titlebar\" data-height=\"{height}\">\
 <div class=\"tb-sidebarZone\">{menu}</div><div class=\"tb-mainChrome\">\
 <div class=\"tb-spacer\"></div>{controls}</div></header><script>{script}</script>",
         css = TB_CSS,
@@ -766,8 +766,8 @@ fn titlebar_block(offset_css: &str) -> String {
 
 fn mac_titlebar_block(offset_css: &str) -> String {
     format!(
-        "<style id=\"hugagent-titlebar-style\">{css}{offset}</style>\
-<header id=\"hugagent-mac-titlebar\" data-height=\"{height}\" aria-hidden=\"true\"></header><script>{script}</script>",
+        "<style id=\"luminos-titlebar-style\">{css}{offset}</style>\
+<header id=\"luminos-mac-titlebar\" data-height=\"{height}\" aria-hidden=\"true\"></header><script>{script}</script>",
         css = MAC_TB_CSS,
         offset = offset_css,
         height = MAC_TITLEBAR_HEIGHT,
@@ -847,7 +847,7 @@ const LOGIN_HTML: &str = r##"<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>登录 · HugAgentOS</title>
+<title>登录 · LuminOS</title>
 <style>
   /* dark-ok-begin: 壳页面是独立文档，取不到 SPA 的令牌，这里就是它自己的调色板真源，
      浅深两套成对定义——取值与 src/frontend/src/styles/variables.css 的同名令牌一致 */
@@ -900,10 +900,10 @@ const LOGIN_HTML: &str = r##"<!doctype html>
 </head>
 <body>
   <div class="card">
-    <img class="logo" src="/icon.png" alt="HugAgentOS" onerror="this.style.display='none'"/>
+    <img class="logo" src="/icon.png" alt="LuminOS" onerror="this.style.display='none'"/>
     <!-- 初始态：等待用户点击登录 -->
     <div id="idle">
-      <h1>HugAgentOS</h1>
+      <h1>LuminOS</h1>
       <button class="btn" onclick="startLogin()">登录并继续</button>
     </div>
     <!-- 等待态：浏览器已打开，等待回跳 -->
@@ -944,7 +944,7 @@ const INIT_HTML: &str = r##"<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>选择运行模式 · HugAgentOS</title>
+<title>选择运行模式 · LuminOS</title>
 <style>
   /* dark-ok-begin: 壳页面是独立文档，取不到 SPA 的令牌，这里就是它自己的调色板真源，
      浅深两套成对定义——取值与 src/frontend/src/styles/variables.css 的同名令牌一致 */
@@ -1006,8 +1006,8 @@ const INIT_HTML: &str = r##"<!doctype html>
 </head>
 <body class="platform-__PLATFORM__">
   <main class="setup">
-    <img class="logo" src="/icon.png" alt="HugAgentOS" onerror="this.style.visibility='hidden'" />
-    <p class="product">HugAgentOS</p>
+    <img class="logo" src="/icon.png" alt="LuminOS" onerror="this.style.visibility='hidden'" />
+    <p class="product">LuminOS</p>
     <h1 id="title">选择运行模式</h1>
     <div class="form">
       <label for="mode">运行模式</label>
@@ -1079,7 +1079,7 @@ const INIT_FIXED_HTML: &str = r##"<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>初始化 · HugAgentOS</title>
+<title>初始化 · LuminOS</title>
 <style>
   /* dark-ok-begin: 壳页面是独立文档，取不到 SPA 的令牌，这里就是它自己的调色板真源 */
   :root{color-scheme:light;--accent:#007AFF;--accent2:#32ADE6;--text:#1D1D1F;
@@ -1131,8 +1131,8 @@ const INIT_FIXED_HTML: &str = r##"<!doctype html>
       <span class="halo"></span><span class="orbit"></span><span class="orbit two"></span>
       <div class="core"><img class="logo" src="/icon.png" alt="" onerror="this.style.visibility='hidden'" /></div>
     </div>
-    <p class="product">HugAgentOS</p>
-    <h1>初始化 HugAgentOS</h1>
+    <p class="product">LuminOS</p>
+    <h1>初始化 LuminOS</h1>
     <p class="lead">配置本机运行环境，并连接云端服务。</p>
     <div class="err" id="err" role="alert"></div>
     <button class="button" id="go" type="button" onclick="start()">开始初始化</button>
@@ -1157,7 +1157,7 @@ const SETUP_HTML: &str = r##"<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>服务设置 · HugAgentOS</title>
+<title>服务设置 · LuminOS</title>
 <style>
   /* dark-ok-begin: 壳页面是独立文档，取不到 SPA 的令牌，这里就是它自己的调色板真源，
      浅深两套成对定义——取值与 src/frontend/src/styles/variables.css 的同名令牌一致 */
@@ -1262,9 +1262,9 @@ const SETUP_HTML: &str = r##"<!doctype html>
   <main class="setup">
     <div class="visual" id="visual" aria-hidden="true">
       <span class="halo"></span><span class="orbit"></span><span class="orbit two"></span>
-      <div class="core"><img class="logo" src="/icon.png" alt="HugAgentOS" onerror="this.style.visibility='hidden'" /></div>
+      <div class="core"><img class="logo" src="/icon.png" alt="LuminOS" onerror="this.style.visibility='hidden'" /></div>
     </div>
-    <p class="product">HugAgentOS</p>
+    <p class="product">LuminOS</p>
     <h1 id="title">在这台电脑上开始使用</h1>
     <section class="actions" aria-label="初始化操作">
       <button class="button primary" id="install" type="button" onclick="installLocal()">从零开始安装</button>
@@ -1275,7 +1275,7 @@ const SETUP_HTML: &str = r##"<!doctype html>
       <div class="error" id="error"></div>
       <details id="details"><summary>查看安装详情</summary><pre class="log" id="log">等待安装日志…</pre></details>
       <div class="ready-actions" id="readyActions">
-        <button class="button primary" id="readyButton" type="button" onclick="finishReady()">进入 HugAgentOS</button>
+        <button class="button primary" id="readyButton" type="button" onclick="finishReady()">进入 LuminOS</button>
       </div>
     </section>
   </main>
@@ -1387,7 +1387,7 @@ const CLOSE_CONFIRM_HTML: &str = r##"<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>关闭 · HugAgentOS</title>
+<title>关闭 · LuminOS</title>
 <style>
   /* dark-ok-begin: 壳页面是独立文档，取不到 SPA 的令牌，这里就是它自己的调色板真源，
      浅深两套成对定义——取值与 src/frontend/src/styles/variables.css 的同名令牌一致 */
@@ -1426,7 +1426,7 @@ const CLOSE_CONFIRM_HTML: &str = r##"<!doctype html>
 </style>
 </head>
 <body>
-  <h1>关闭HugAgentOS</h1>
+  <h1>关闭LuminOS</h1>
   <p>关闭后可最小化到系统托盘继续在后台运行（自动化任务等），或直接退出程序。</p>
   <label class="remember"><input type="checkbox" id="remember" /> 记住我的选择，下次不再询问</label>
   <div class="btns">
@@ -1448,7 +1448,7 @@ const SERVER_CONFIG_HTML: &str = r##"<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>服务器地址 · HugAgentOS</title>
+<title>服务器地址 · LuminOS</title>
 <style>
   /* dark-ok-begin: 壳页面是独立文档，取不到 SPA 的令牌，这里就是它自己的调色板真源，
      浅深两套成对定义——取值与 src/frontend/src/styles/variables.css 的同名令牌一致 */
@@ -1564,7 +1564,7 @@ mod tests {
         assert!(block.contains("event.key==='F11'"));
         assert!(block.contains("event.key==='ArrowDown'"));
         assert!(block.contains("inset:0 0 auto 0"));
-        assert!(block.contains("var(--hugagent-desktop-sidebar-chrome)),var(--color-bg-layout)"));
+        assert!(block.contains("var(--luminos-desktop-sidebar-chrome)),var(--color-bg-layout)"));
         assert!(block.contains("class=\"tb-sidebarZone\""));
         assert!(block.contains("class=\"tb-mainChrome\""));
         assert!(!block.contains("class=\"tb-currentTab\""));
@@ -1573,12 +1573,12 @@ mod tests {
         assert!(!block.contains("resolveTabLabel"));
         assert!(block.contains("body{box-sizing:border-box!important;padding-top:0!important}"));
         assert!(block.contains(
-            ".jx-appMainLayout{box-sizing:border-box!important;padding-top:var(--hugagent-desktop-titlebar-height)!important}"
+            ".jx-appMainLayout{box-sizing:border-box!important;padding-top:var(--luminos-desktop-titlebar-height)!important}"
         ));
         assert!(block.contains(".jx-brandRow{padding-top:50px!important}"));
         assert!(block.contains(".jx-miniRail{padding-top:48px!important}"));
         assert!(block.contains("sampleBg('.jx-sider')"));
-        assert!(!block.contains("--hugagent-desktop-main-chrome"));
+        assert!(!block.contains("--luminos-desktop-main-chrome"));
         assert!(block.contains("font-family:inherit;font-size:12px;line-height:1;"));
         assert!(!block.contains("border-bottom:1px"));
         assert!(block.find("tb-sidebarZone") < block.find("<nav class=\"tb-menu\""));
@@ -1589,7 +1589,7 @@ mod tests {
     #[test]
     fn mac_titlebar_is_a_compact_drag_region_without_duplicate_actions() {
         let block = mac_titlebar_block(MAC_OFFSET_SPA);
-        assert!(block.contains("hugagent-mac-titlebar"));
+        assert!(block.contains("luminos-mac-titlebar"));
         assert!(block.contains("height:28px"));
         assert!(block.contains("background:transparent"));
         assert!(!block.contains("border-bottom"));
@@ -1599,7 +1599,7 @@ mod tests {
         assert!(!block.contains("data-win=\"minimize\""));
         assert!(!block.contains("data-win=\"close\""));
         assert!(!block.contains("tb-menuLabel"));
-        assert!(block.contains("--hugagent-desktop-sidebar-width"));
+        assert!(block.contains("--luminos-desktop-sidebar-width"));
         // 左半幅必须逐字复刻 sidebar.css 里 .jx-sider 的配方，否则安全区和侧边栏会脱色；
         // 底色引令牌而不是写死，深色档才不会被 !important 摁回浅色。
         assert!(block.contains(
@@ -1656,7 +1656,7 @@ mod tests {
         }
         let offenders: Vec<&str> = TB_CSS
             .lines()
-            .filter(|line| line.contains('#') && !line.starts_with("#hugagent-titlebar"))
+            .filter(|line| line.contains('#') && !line.starts_with("#luminos-titlebar"))
             .filter(|line| !line.contains("dark-ok"))
             .collect();
         // 关闭键那行紧跟在 dark-ok 注释之后，单独放行
@@ -1676,15 +1676,15 @@ mod tests {
             mac_titlebar_block(MAC_OFFSET_PAGE),
         ] {
             assert!(block.contains(
-                ".ant-message{top:calc(var(--hugagent-desktop-titlebar-height) + 8px)!important}"
+                ".ant-message{top:calc(var(--luminos-desktop-titlebar-height) + 8px)!important}"
             ));
             assert!(block.contains(
                 ".ant-notification-top,.ant-notification-topLeft,.ant-notification-topRight"
             ));
         }
-        assert!(titlebar_block(TB_OFFSET_SPA).contains("--hugagent-desktop-titlebar-height:34px"));
+        assert!(titlebar_block(TB_OFFSET_SPA).contains("--luminos-desktop-titlebar-height:34px"));
         assert!(
-            mac_titlebar_block(MAC_OFFSET_SPA).contains("--hugagent-desktop-titlebar-height:28px")
+            mac_titlebar_block(MAC_OFFSET_SPA).contains("--luminos-desktop-titlebar-height:28px")
         );
     }
 

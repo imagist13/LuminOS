@@ -1,4 +1,4 @@
-"""Plugin manifest detection + normalization (unified reading layer for native / Claude Code / Codex packages).
+﻿"""Plugin manifest detection + normalization (unified reading layer for native / Claude Code / Codex packages).
 
 This module is **only responsible for reading a plugin directory into a unified
 NormalizedPlugin** (detecting the manifest format, auto-discovering skills and
@@ -33,10 +33,10 @@ SKILL_MD_NAME = "SKILL.md"
 # Agent Plugins (agent-plugins.org) reverse-domain extension namespace for this
 # platform. Standard-compliant manifests keep plugin.json top-level fields to the
 # closed spec schema and carry platform-specific data (connection / admin_config /
-# required_secrets / MCP display metadata) under extensions["org.hugagent"].
+# required_secrets / MCP display metadata) under extensions["org.luminos"].
 # Lowercase on purpose: lowercase technical identifiers survive the CE brand
 # transform unchanged.
-EXTENSION_NAMESPACE = "org.hugagent"
+EXTENSION_NAMESPACE = "org.luminos"
 
 
 def manifest_extensions(manifest: Dict[str, Any]) -> Dict[str, Any]:
@@ -106,7 +106,7 @@ class NormalizedPlugin:
     # panel on the plugin detail page where the user completes a one-time
     # authorization. None = no account connection needed.
     connection: Optional[str] = None
-    # UI contributions (``extensions["org.hugagent"].ui``): which host view
+    # UI contributions (``extensions["org.luminos"].ui``): which host view
     # renders which tool, canvas tabs, homepage shortcuts, proxied data sources
     # and self-shipped L2 modules. Validated by ``plugin_ui_contract``; None =
     # this plugin contributes no interface and its tools render generically.
@@ -434,7 +434,7 @@ def normalize_plugin_dir(plugin_dir: Path) -> NormalizedPlugin:
     """Read any plugin directory (native/CC/Codex) into a unified NormalizedPlugin.
 
     "native" means an Agent Plugins standard package (plugin.json restricted to
-    the closed spec schema, platform fields under extensions["org.hugagent"],
+    the closed spec schema, platform fields under extensions["org.luminos"],
     MCP in a standalone mcp.json). Legacy native manifests with platform fields
     at the top level keep working as a compatibility fallback.
     """

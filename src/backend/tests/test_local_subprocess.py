@@ -1,4 +1,4 @@
-"""Local/desktop sidecar startup contracts."""
+﻿"""Local/desktop sidecar startup contracts."""
 
 import io
 import os
@@ -218,7 +218,7 @@ def test_find_stale_sidecar_pids_matches_only_own_install():
             # 其它产品同名 sidecar：安装根不同，不能杀
             "  103 /Users/u/AS/com.other.desktop/local-server/releases/b/venv/bin/python -m mcp_servers._launcher",
             # 主服务进程不是 sidecar
-            f"  104 {root}/releases/a/venv/bin/hugagent serve --port 32101",
+            f"  104 {root}/releases/a/venv/bin/luminos serve --port 32101",
             # 指纹撞车但没有本安装根路径
             "  105 /bin/bash -c 'echo services.script_runner_service.server:app'",
             "  garbage line",
@@ -277,13 +277,13 @@ async def test_start_fails_fast_when_runner_port_is_occupied(monkeypatch):
 
 
 def test_stale_sidecar_match_folds_case_for_windows_paths():
-    root = r"C:\Users\Aaron\AppData\Local\com.hugagent.desktop\local-server"
+    root = r"C:\Users\Aaron\AppData\Local\com.luminos.desktop\local-server"
     table = "\n".join(
         [
-            r"1200 c:\users\aaron\appdata\local\com.hugagent.desktop\local-server\r\p\x\python\python.exe -m uvicorn services.script_runner_service.server:app --port 32202",
-            r"1201 C:\Users\Aaron\AppData\Local\com.hugagent.desktop\local-server\r\p\x\python\python.exe -m mcp_servers._launcher",
-            r"1202 C:\Users\Aaron\AppData\Local\cn.hugagent.agent.desktop\local-server\r\p\x\python\python.exe -m uvicorn services.script_runner_service.server:app --port 8900",
-            r"1203 C:\Users\Aaron\AppData\Local\com.hugagent.desktop\local-server\r\p\x\python\python.exe cli.py serve --port 32201",
+            r"1200 c:\users\aaron\appdata\local\com.luminos.desktop\local-server\r\p\x\python\python.exe -m uvicorn services.script_runner_service.server:app --port 32202",
+            r"1201 C:\Users\Aaron\AppData\Local\com.luminos.desktop\local-server\r\p\x\python\python.exe -m mcp_servers._launcher",
+            r"1202 C:\Users\Aaron\AppData\Local\cn.luminos.agent.desktop\local-server\r\p\x\python\python.exe -m uvicorn services.script_runner_service.server:app --port 8900",
+            r"1203 C:\Users\Aaron\AppData\Local\com.luminos.desktop\local-server\r\p\x\python\python.exe cli.py serve --port 32201",
         ]
     )
     assert local_subprocess._find_stale_sidecar_pids(table, root_marker=root, my_pid=1203) == [1201]

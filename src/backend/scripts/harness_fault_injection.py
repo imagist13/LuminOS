@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Run the Harness v2 process-crash recovery matrix against ephemeral SQLite.
 
 This is intentionally a destructive *test-only* utility.  It creates one new
@@ -607,7 +607,7 @@ def _parser() -> argparse.ArgumentParser:
     matrix = subparsers.add_parser("matrix", help="kill and recover all safe points")
     matrix.add_argument(
         "--state-dir",
-        default=str(Path(tempfile.gettempdir()) / "hugagent-harness-fault-matrix"),
+        default=str(Path(tempfile.gettempdir()) / "luminos-harness-fault-matrix"),
     )
     matrix.add_argument("--lease-seconds", type=int, default=1)
     matrix.add_argument("--timeout", type=float, default=30.0)

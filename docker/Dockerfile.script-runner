@@ -1,9 +1,9 @@
-# Script Runner Sidecar 镜像
+﻿# Script Runner Sidecar 镜像
 # 独立沙盒服务，容器内 setrlimit + 子进程执行 skill / MCP 脚本。
 # 通过 SANDBOX_PROVIDER=script_runner 选用（默认）。
 #
 # 构建：
-#   docker build -t hugagent-script-runner:latest \
+#   docker build -t luminos-script-runner:latest \
 #     -f Dockerfile.script-runner .
 # 由 docker-compose 在 SANDBOX_PROVIDER=script_runner（COMPOSE_PROFILES=script_runner）
 # 时自动构建启动。

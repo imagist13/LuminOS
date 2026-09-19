@@ -1,4 +1,4 @@
-"""Unit tests for inbound channel bots (owner service-account model).
+﻿"""Unit tests for inbound channel bots (owner service-account model).
 
 Covers: capability flags, repository CRUD, service capability gating + token
 lock, resource-whitelist normalization, and the Lark adapter's event
@@ -1822,7 +1822,7 @@ def test_dingtalk_parse_dws_history_real_shape():
 
     p = DingTalkAdapter._parse_dws_history
     items = p({"errorCode": None, "result": {"hasMore": True, "messages": [{
-        "content": "@HugAgentOS 你再看看 现在可以查到了吗",
+        "content": "@LuminOS 你再看看 现在可以查到了吗",
         "createTime": "2026-08-08 21:57:33",
         "openConversationId": "cidaKkLSKoy6sVI9cklpK2LWw==",
         "openMessageId": "msgpUQWt9mBVdjLj788Z/nnww==",

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+﻿import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
@@ -27,7 +27,7 @@ export function readDesktopVersions(desktopDir) {
   );
   const cargoVersion = cargoToml.match(/^version\s*=\s*"([^"]+)"/m)?.[1];
   const cargoLockVersion = cargoLock.match(
-    /\[\[package\]\]\r?\nname = "hugagent-desktop"\r?\nversion = "([^"]+)"/,
+    /\[\[package\]\]\r?\nname = "luminos-desktop"\r?\nversion = "([^"]+)"/,
   )?.[1];
 
   const versions = {
@@ -122,7 +122,7 @@ export function setDesktopVersion(desktopDir, version) {
   writeFileSync(cargoPath, cargoToml, "utf8");
 
   const cargoLock = readFileSync(cargoLockPath, "utf8").replace(
-    /(\[\[package\]\]\r?\nname = "hugagent-desktop"\r?\nversion = ")[^"]+("\r?\n)/,
+    /(\[\[package\]\]\r?\nname = "luminos-desktop"\r?\nversion = ")[^"]+("\r?\n)/,
     `$1${version}$2`,
   );
   writeFileSync(cargoLockPath, cargoLock, "utf8");

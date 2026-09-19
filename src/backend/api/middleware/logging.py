@@ -1,4 +1,4 @@
-"""HTTP logging and request-size-limit middleware.
+﻿"""HTTP logging and request-size-limit middleware.
 
 Uses pure ASGI middleware instead of Starlette's BaseHTTPMiddleware
 to avoid breaking SSE streaming.  BaseHTTPMiddleware wraps response
@@ -82,7 +82,7 @@ class LoggingMiddleware:
                     # 免掉定时轮询（core/capabilities/change_signal.py）。
                     from core.capabilities.change_signal import current
 
-                    headers.append((b"x-hugagent-capability-epoch", current().encode()))
+                    headers.append((b"x-luminos-capability-epoch", current().encode()))
                     message = {**message, "headers": headers}
                 await send(message)
 

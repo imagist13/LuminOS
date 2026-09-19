@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """streamable-http MCP server：技能管理（搜索/安装/创建落库/申请上架/管理/删除）。
 
 用户身份经 HTTP 头注入（由后端 agent_factory 设置）：
@@ -17,7 +17,7 @@ from mcp.server.fastmcp import Context, FastMCP
 
 from mcp_servers.skill_manager_mcp import impl
 
-mcp = FastMCP("hugagent-skill-manager")
+mcp = FastMCP("luminos-skill-manager")
 
 _HDR_USER = "x-current-user-id"
 

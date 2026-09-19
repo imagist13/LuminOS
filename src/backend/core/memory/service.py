@@ -1,4 +1,4 @@
-"""mem0 memory service wrapper
+﻿"""mem0 memory service wrapper
 
 Directly reuses mem0 framework capabilities:
 - vector retrieval (Milvus)
@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 # Single source of truth for the Milvus collection mem0 reads/writes.
 # scripts/migrate_memory_isolation.py imports this so the one-off migration can
 # never drift from the runtime collection name.
-MEMORY_COLLECTION_NAME = "hugagent_memories"
+MEMORY_COLLECTION_NAME = "luminos_memories"
 
 # The only kind of memory L2 stores. Facts used to live here too; they no longer
 # do, because a stored fact is a snapshot that starts decaying the moment it is

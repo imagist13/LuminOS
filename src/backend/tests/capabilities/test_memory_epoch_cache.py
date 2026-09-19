@@ -1,4 +1,4 @@
-"""The memory singleton must not outlive its captured desktop login identity."""
+﻿"""The memory singleton must not outlive its captured desktop login identity."""
 
 import sys
 from types import SimpleNamespace
@@ -16,7 +16,7 @@ from tests.capabilities.test_dynamic_model_epoch_cache import state
 @pytest.fixture
 def memories(monkeypatch, caps_root):
     current = {"state": state(), "instances": [], "on_build": None}
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "synthetic")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "synthetic")
     monkeypatch.setattr(bridge, "get_state", lambda: current["state"])
     monkeypatch.setattr(
         service,
@@ -104,7 +104,7 @@ def test_identity_change_during_initialization_is_not_published(memories):
 
 
 def test_non_desktop_singleton_does_not_consult_bridge(memories, monkeypatch):
-    monkeypatch.delenv("HUGAGENT_DESKTOP_BRIDGE_SECRET")
+    monkeypatch.delenv("LUMINOS_DESKTOP_BRIDGE_SECRET")
     cached = object()
     monkeypatch.setattr(service, "_memory_instance", cached)
     monkeypatch.setattr(service, "_memory_epoch", "")

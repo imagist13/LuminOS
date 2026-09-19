@@ -1,4 +1,4 @@
-# official-doc-writer
+﻿# official-doc-writer
 
 党政机关公文生成技能，符合 GB/T 9704-2012《党政机关公文格式》国家标准。
 
@@ -205,7 +205,7 @@ python scripts/install_fonts.py
 
 ## 作者
 
-- 作者: HugAgentOS Team
+- 作者: LuminOS Team
 - 许可证: MIT
 
 ## 相关标准

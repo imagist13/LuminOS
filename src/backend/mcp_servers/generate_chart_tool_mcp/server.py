@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """stdio MCP server exposing tool: generate_chart_tool."""
 
 from __future__ import annotations
@@ -11,7 +11,7 @@ from typing import Any, Dict
 
 from mcp.server import FastMCP
 
-mcp = FastMCP("hugagent-generate-chart-tool")
+mcp = FastMCP("luminos-generate-chart-tool")
 
 
 @mcp.tool()

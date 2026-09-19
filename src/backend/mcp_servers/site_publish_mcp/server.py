@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Community-edition site publishing MCP server."""
 
 from __future__ import annotations
@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional
 from mcp.server.fastmcp import Context, FastMCP
 from mcp_servers.site_publish_mcp import impl
 
-mcp = FastMCP("hugagent-site-publish")
+mcp = FastMCP("luminos-site-publish")
 
 _HDR_USER = "x-current-user-id"
 _HDR_CHAT = "x-chat-id"

@@ -1,4 +1,4 @@
-"""ToolCollector — adapts 1.x's incremental ``toolkit.register_*`` to 2.0's one-shot Toolkit.
+﻿"""ToolCollector — adapts 1.x's incremental ``toolkit.register_*`` to 2.0's one-shot Toolkit.
 
 AgentScope 2.0's ``Toolkit`` is injected once at construction time (``Toolkit(tools=,
 mcps=, skills_or_loaders=)``); it has no incremental ``register_tool_function`` /
@@ -44,7 +44,7 @@ class AllowedFunctionTool(FunctionTool):
     async def check_permissions(self, *args: Any, **kwargs: Any) -> PermissionDecision:
         return PermissionDecision(
             behavior=PermissionBehavior.ALLOW,
-            message="HugAgentOS self-developed tool (auto-allowed).",
+            message="LuminOS self-developed tool (auto-allowed).",
         )
 
 

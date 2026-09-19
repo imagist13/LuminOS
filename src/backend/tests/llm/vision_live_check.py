@@ -1,4 +1,4 @@
-"""视觉桥真实联调脚本（手动运行，不进 pytest 默认集合）。
+﻿"""视觉桥真实联调脚本（手动运行，不进 pytest 默认集合）。
 
 用当前部署里**真实配置的**模型跑通一次完整链路：合成一张内容已知的图 → 视觉桥 →
 校验证据里确实读到了图上的字。凭据全程从 ``ModelConfigService`` 取，不打印。
@@ -16,7 +16,7 @@ import asyncio
 import io
 import sys
 
-MAGIC_TEXT = "HUGAGENT-7429"
+MAGIC_TEXT = "LUMINOS-7429"
 MAGIC_WORD = "营收报表"
 
 

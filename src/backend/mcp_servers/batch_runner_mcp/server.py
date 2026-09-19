@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """stdio MCP server exposing the batch_plan tool.
 
 This tool is the LLM's entry point into the batch-execution flow. It
@@ -14,7 +14,7 @@ from typing import Any, Dict, List
 
 from mcp.server import FastMCP
 
-mcp = FastMCP("hugagent-batch-runner")
+mcp = FastMCP("luminos-batch-runner")
 
 
 @mcp.tool()

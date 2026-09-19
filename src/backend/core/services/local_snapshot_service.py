@@ -1,7 +1,7 @@
-"""Write-back snapshots + rollback for desktop local files (ticket #08).
+﻿"""Write-back snapshots + rollback for desktop local files (ticket #08).
 
 Before the agent overwrites a file inside a local project, we copy the current
-content into a snapshot store (``~/.hugagent/local_snapshots``). The user can then
+content into a snapshot store (``~/.luminos/local_snapshots``). The user can then
 roll the file back to its previous version. Best-effort and non-fatal: a snapshot
 failure never blocks the write.
 
@@ -24,7 +24,7 @@ _MAX_PER_FILE = 10
 
 
 def _data_dir() -> Path:
-    return Path(os.getenv("HUGAGENT_HOME", str(Path.home() / ".hugagent"))).expanduser()
+    return Path(os.getenv("LUMINOS_HOME", str(Path.home() / ".luminos"))).expanduser()
 
 
 def _snap_root() -> Path:

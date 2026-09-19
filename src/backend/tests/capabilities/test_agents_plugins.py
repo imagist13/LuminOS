@@ -1,4 +1,4 @@
-"""智能体 / 插件：协议、云端清单与定义包、本机落盘、组件归属与就绪、名称裁决与列表合并。"""
+﻿"""智能体 / 插件：协议、云端清单与定义包、本机落盘、组件归属与就绪、名称裁决与列表合并。"""
 
 from __future__ import annotations
 
@@ -229,7 +229,7 @@ class _Cloud:
 @pytest.fixture
 def device(tmp_path, monkeypatch, index_db, caps_root):
     monkeypatch.setenv("SANDBOX_SKILLS_DIR", str(tmp_path / "ws" / "skills"))
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "s")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "s")
     bridge.reset_for_tests()
     bundles.reset_for_tests()
     monkeypatch.setattr(bridge, "bridge_enabled", lambda: True)

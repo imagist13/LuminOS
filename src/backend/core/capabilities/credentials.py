@@ -1,4 +1,4 @@
-"""Device credential store for ``credentialRef`` values in ``mcp.json``.
+﻿"""Device credential store for ``credentialRef`` values in ``mcp.json``.
 
 Secrets never live in the capability directory or the business database. They
 are handed to the operating system's credential store:
@@ -20,7 +20,7 @@ import subprocess
 import sys
 from typing import Dict, Optional
 
-SERVICE = "cn.hugagent.agent.desktop.mcp"
+SERVICE = "cn.luminos.agent.desktop.mcp"
 REF_PREFIX = "os-store:"
 
 
@@ -187,7 +187,7 @@ def _linux_delete(name: str) -> bool:
 
 
 def _backend():
-    override = os.getenv("HUGAGENT_CREDENTIAL_BACKEND", "").strip()
+    override = os.getenv("LUMINOS_CREDENTIAL_BACKEND", "").strip()
     if override == "memory":  # tests only
         return _MEMORY
     if sys.platform == "win32":

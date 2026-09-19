@@ -1,4 +1,4 @@
-"""Plugin UI contribution contract: validation, projection, proxy and hosting.
+﻿"""Plugin UI contribution contract: validation, projection, proxy and hosting.
 
 Covers the three properties the design leans on:
 
@@ -185,7 +185,7 @@ def test_public_projection_strips_credentials():
 
 def test_industry_plugin_declaration_validates_cleanly():
     manifest = json.loads(IKC_MANIFEST.read_text(encoding="utf-8"))
-    ui, dropped = normalize_ui(manifest["extensions"]["org.hugagent"]["ui"])
+    ui, dropped = normalize_ui(manifest["extensions"]["org.luminos"]["ui"])
 
     assert dropped == [], f"declaration has rejected entries: {dropped}"
     contributes = ui["contributes"]
@@ -204,14 +204,14 @@ def test_industry_plugin_declaration_validates_cleanly():
 
 def test_industry_plugin_does_not_add_a_homepage_shortcut():
     manifest = json.loads(IKC_MANIFEST.read_text(encoding="utf-8"))
-    ui, _ = normalize_ui(manifest["extensions"]["org.hugagent"]["ui"])
+    ui, _ = normalize_ui(manifest["extensions"]["org.luminos"]["ui"])
 
     assert ui["contributes"].get("shortcuts", []) == []
 
 
 def test_industry_declaration_only_references_tools_the_plugin_exposes():
     manifest = json.loads(IKC_MANIFEST.read_text(encoding="utf-8"))
-    ext = manifest["extensions"]["org.hugagent"]
+    ext = manifest["extensions"]["org.luminos"]
     declared_tools = {
         tool["name"]
         for server in ext["mcp"].values()
@@ -234,7 +234,7 @@ def test_industry_declaration_only_references_tools_the_plugin_exposes():
 
 def test_industry_module_entry_exists_in_the_package():
     manifest = json.loads(IKC_MANIFEST.read_text(encoding="utf-8"))
-    ui, _ = normalize_ui(manifest["extensions"]["org.hugagent"]["ui"])
+    ui, _ = normalize_ui(manifest["extensions"]["org.luminos"]["ui"])
     entry = find_module(ui, "chain-overview")["entry"]
     module_path = IKC_MANIFEST.parent / entry
     assert module_path.is_file(), f"missing module asset: {entry}"
@@ -249,7 +249,7 @@ def test_industry_module_entry_exists_in_the_package():
 def test_industry_declared_icons_ship_with_the_package():
     """Icons live in the plugin package, not in the host frontend tree."""
     manifest = json.loads(IKC_MANIFEST.read_text(encoding="utf-8"))
-    ui, _ = normalize_ui(manifest["extensions"]["org.hugagent"]["ui"])
+    ui, _ = normalize_ui(manifest["extensions"]["org.luminos"]["ui"])
 
     icons = set()
 

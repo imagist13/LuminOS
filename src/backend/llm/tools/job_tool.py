@@ -1,4 +1,4 @@
-"""run_job 工具 —— 主对话智能体提交批量作业的唯一入口。
+﻿"""run_job 工具 —— 主对话智能体提交批量作业的唯一入口。
 
 定位：这不是「又一个固定形状的批处理工具」，而是一个**可编程的编排面**。智能体先用
 ``write`` 把一段作业脚本写进沙箱，再用 ``run_job`` 提交；脚本里的控制流（循环、条件、
@@ -110,7 +110,7 @@ def register_run_job(
         怎么用（三步）：
 
         1. 用 ``write`` 把作业脚本写到沙箱，例如 ``/workspace/jobs/fill.py``。
-           脚本里 ``from hugagent_job import ledger, agent, job, log`` 即可，SDK 由系统注入：
+           脚本里 ``from luminos_job import ledger, agent, job, log`` 即可，SDK 由系统注入：
 
              - ``ledger.seed([{"key": "r2", "payload": {...}}, ...])`` 建台账（按 key 幂等）
              - ``ledger.pending()`` 取待办；``ledger.update(key, status="done", result=...)`` 回写

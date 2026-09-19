@@ -1,4 +1,4 @@
-"""Mock SSO server for local development and testing.
+﻿"""Mock SSO server for local development and testing.
 
 Provides two endpoints that simulate the external unified login system:
   - GET  /mock-sso/login          → Generates a one-time ticket and redirects to the app
@@ -395,7 +395,7 @@ def _render_legacy_mock_page(redirect: str, error: Optional[str]) -> str:
   <div class="page">
     <header class="brand">
       <a class="brand-link" href="/mock-sso/login?redirect={redirect}">
-        <img class="brand-logo" src="/home/hugagentos-logo.png" alt="{brand_name}"/>
+        <img class="brand-logo" src="/home/luminosos-logo.png" alt="{brand_name}"/>
       </a>
     </header>
     <main class="main">
@@ -1198,7 +1198,7 @@ async def mock_login_page(
   <div class="page">
     <header class="brand">
       <a class="brand-link" href="/login?redirect={redirect}">
-        <img class="brand-logo" src="/home/hugagentos-logo.png" alt="{brand_name}" />
+        <img class="brand-logo" src="/home/luminosos-logo.png" alt="{brand_name}" />
       </a>
     </header>
     <main class="main">

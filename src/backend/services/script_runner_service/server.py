@@ -1,4 +1,4 @@
-"""
+﻿"""
 Skill script execution sidecar service.
 
 Receives HTTP requests from the backend and executes predefined scripts in a
@@ -36,7 +36,7 @@ except ImportError:  # Windows does not provide the POSIX resource module.
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("script-runner")
 
-app = FastAPI(title="HugAgentOS Script Runner", docs_url=None, redoc_url=None)
+app = FastAPI(title="LuminOS Script Runner", docs_url=None, redoc_url=None)
 
 # ── Configuration ──
 MAX_TIMEOUT = int(os.getenv("SCRIPT_MAX_TIMEOUT", "120"))
@@ -45,7 +45,7 @@ MAX_MEMORY_MB = int(os.getenv("SCRIPT_MAX_MEMORY_MB", "256"))
 # Workspace root. In the Docker sidecar this stays the container-absolute
 # ``/workspace`` (a mounted tmpfs). In the no-Docker local profile the runner is
 # a plain host subprocess, so the CLI points it at a real host dir such as
-# ``~/.hugagent/workspace`` via ``SCRIPT_RUNNER_WORKSPACE``. Everything under here
+# ``~/.luminos/workspace`` via ``SCRIPT_RUNNER_WORKSPACE``. Everything under here
 # is created on first use; ``.sessions/<hash>`` is the per-conversation boundary
 # and ``_validate_workspace_path`` confines file API access to that directory.
 WORKSPACE_ROOT = os.getenv("SCRIPT_RUNNER_WORKSPACE", "/workspace")
@@ -199,7 +199,7 @@ def _rewrite_execution_paths(
         value = value.replace(WORKSPACE_ROOT.rstrip("/\\"), "/workspace")
     # Protect the frozen skill root from the mutable conversation-workspace
     # mapping. Another run in this chat may relink its compatibility skills dir.
-    marker = "__HUGAGENT_PREPARED_SKILLS_ROOT__"
+    marker = "__LUMINOS_PREPARED_SKILLS_ROOT__"
     if skills_root:
         skill_pattern = re.compile(_WS_PATH_RE.pattern.replace("/workspace", "/workspace/skills"))
         value = skill_pattern.sub(marker, value)
@@ -303,7 +303,7 @@ def _session_workspace(
         if capability_view_key is not None:
             if not re.fullmatch(r"[a-f0-9]{64}", capability_view_key):
                 raise HTTPException(400, "invalid prepared capability view")
-            caps = os.getenv("HUGAGENT_CAPS_ROOT", "").strip()
+            caps = os.getenv("LUMINOS_CAPS_ROOT", "").strip()
             if not caps:
                 raise HTTPException(409, "prepared capability view requires local execution")
             root = Path(caps).resolve()
@@ -350,7 +350,7 @@ INTERPRETERS = {
     # Use the running venv on local Windows/macOS/Linux installations.  A bare
     # ``python3`` is not installed on a standard Windows machine.
     "python": [sys.executable, "-u"],
-    "bash": [_BASH_EXECUTABLE or "hugagent-git-bash-not-installed"],
+    "bash": [_BASH_EXECUTABLE or "luminos-git-bash-not-installed"],
     "javascript": [shutil.which("node") or "node"],
 }
 
@@ -421,7 +421,7 @@ _LOCAL_SKILL_CLI_IDS = ("pdf-editing",)
 def _local_safe_path_entries() -> list[str]:
     """Return trusted executable directories for the no-Docker runner.
 
-    The quick installer runs the backend from ``~/.hugagent/venv`` while the
+    The quick installer runs the backend from ``~/.luminos/venv`` while the
     subprocess sandbox intentionally starts from a clean PATH. Include that
     venv explicitly so skill shims use the same Python dependencies as the
     server, then expose each materialized built-in Office CLI without copying
@@ -998,7 +998,7 @@ async def _execute_subprocess(cmd: list, stdin_data: str, timeout: int, cwd: str
                 isinstance(e, FileNotFoundError)
                 and os.name == "nt"
                 and cmd
-                and Path(str(cmd[0])).stem.lower() in {"bash", "hugagent-git-bash-not-installed"}
+                and Path(str(cmd[0])).stem.lower() in {"bash", "luminos-git-bash-not-installed"}
             ):
                 detail = "Windows 本机未找到 Bash；请安装 Git for Windows 后重启桌面客户端"
             return {"stdout": "", "stderr": detail, "exit_code": -1}

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """streamable-http MCP server：智能体管理（搜索/安装/创建/修改/删除/申请上架子智能体）。
 
 用户身份经 HTTP 头注入（由后端 agent_factory 设置）：
@@ -17,7 +17,7 @@ from mcp.server.fastmcp import Context, FastMCP
 
 from mcp_servers.agent_manager_mcp import impl
 
-mcp = FastMCP("hugagent-agent-manager")
+mcp = FastMCP("luminos-agent-manager")
 
 _HDR_USER = "x-current-user-id"
 

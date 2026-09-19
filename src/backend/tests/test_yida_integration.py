@@ -1,4 +1,4 @@
-"""Shared Yida plugin, connection service, path, and SKILL.md regression tests.
+﻿"""Shared Yida plugin, connection service, path, and SKILL.md regression tests.
 
 No dependency on real Yida or a real sandbox. EE persistent-sandbox state tests
 live in ``tests/sandbox/test_yida_ee_persistence.py``.
@@ -276,7 +276,7 @@ async def test_yida_run_in_sandbox_heals_stale_sandbox(monkeypatch):
 
 
 def test_yida_plugin_declares_connection():
-    """plugin.json declares connection=yida (extensions["org.hugagent"], Agent Plugins standard)
+    """plugin.json declares connection=yida (extensions["org.luminos"], Agent Plugins standard)
     → the frontend plugin detail page renders the YidaConnect panel."""
     import pathlib
 

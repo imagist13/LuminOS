@@ -1,4 +1,4 @@
-//! 桌面端会话 token 的持久化 + handoff 票据兑换（方案 B 的 App 侧）。
+﻿//! 桌面端会话 token 的持久化 + handoff 票据兑换（方案 B 的 App 侧）。
 //!
 //! Session tokens are held by the OS credential store; auth.json is migration-only.
 
@@ -201,7 +201,7 @@ mod tests {
     fn legacy_token_migrates_without_plaintext_fallback() {
         for fail in [false, true] {
             let dir =
-                std::env::temp_dir().join(format!("hugagent-auth-{}-{fail}", std::process::id()));
+                std::env::temp_dir().join(format!("luminos-auth-{}-{fail}", std::process::id()));
             std::fs::create_dir_all(&dir).unwrap();
             std::fs::write(dir.join("auth.json"), r#"{"token":"legacy-session"}"#).unwrap();
             let store = MemoryStore {

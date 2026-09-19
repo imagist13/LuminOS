@@ -1,4 +1,4 @@
-"""Autonomous Loop driver — run-level self-driving loop (the main axis for long-running autonomous work).
+﻿"""Autonomous Loop driver — run-level self-driving loop (the main axis for long-running autonomous work).
 
 This overhaul makes the three pillars of Claude Code's "external harness" the skeleton of
 the loop **itself**, replacing the old "worker self-managed todos + single-goal stagnation
@@ -1242,7 +1242,7 @@ async def run_autonomous_loop(
             # evidence-backed) → reset the streak; otherwise count one stalled round.
             # A mega-requirement legitimately spanning many rounds (e.g. 20-chapter
             # body written chapter-by-chapter) used to hit the flat attempt cap and
-            # get blocked mid-progress — the 2026-08-10 HugAgentOS 200-page rerun lost
+            # get blocked mid-progress — the 2026-08-10 LuminOS 200-page rerun lost
             # its core body requirement exactly this way at attempt 6 while the
             # draft had healthily grown every round.
             if bool(review.get("progress")):

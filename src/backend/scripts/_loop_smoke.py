@@ -1,6 +1,6 @@
-"""Smoke test: verify create_agent_executor can actually run one round of reply (LLM path) + sandbox bash (worker path).
+﻿"""Smoke test: verify create_agent_executor can actually run one round of reply (LLM path) + sandbox bash (worker path).
 
-    docker exec hugagent-backend python /app/src/backend/scripts/_loop_smoke.py
+    docker exec luminos-backend python /app/src/backend/scripts/_loop_smoke.py
 """
 import asyncio
 import sys

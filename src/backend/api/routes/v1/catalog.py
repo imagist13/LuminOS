@@ -1,4 +1,4 @@
-"""Catalog management API routes (v1)."""
+﻿"""Catalog management API routes (v1)."""
 
 import asyncio
 import logging
@@ -504,7 +504,7 @@ def _get_catalog_items_sync(user: UserContext, db: Session):
                 "desc": space.description or "无简介",
                 "enabled": True,
                 "version": "local",
-                "provider": "HugAgentOS-KB",
+                "provider": "LuminOS-KB",
                 "visibility": space.visibility,
                 "is_public": space.visibility == "public",
                 "chunk_method": space.chunk_method or "semantic",
@@ -569,7 +569,7 @@ def _get_catalog_items_sync(user: UserContext, db: Session):
                         "desc": space.description or "无简介",
                         "enabled": True,
                         "version": "local",
-                        "provider": "HugAgentOS-KB",
+                        "provider": "LuminOS-KB",
                         "visibility": space.visibility,
                         "is_public": space.visibility == "public",
                         "access_level": level,

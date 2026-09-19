@@ -1,4 +1,4 @@
-"""The real skill loader with the desktop store enabled: resolver-driven merge, no priority override."""
+﻿"""The real skill loader with the desktop store enabled: resolver-driven merge, no priority override."""
 
 from __future__ import annotations
 
@@ -39,8 +39,8 @@ PROFILE = profile_id(STATE["cloud_base"], "u-1")
 @pytest.fixture
 def env(tmp_path, monkeypatch, index_db, caps_root):
     monkeypatch.setenv("SANDBOX_SKILLS_DIR", str(tmp_path / "ws" / "skills"))
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "s")
-    monkeypatch.setenv("HUGAGENT_DISABLE_PROJECT_SKILLS", "1")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "s")
+    monkeypatch.setenv("LUMINOS_DISABLE_PROJECT_SKILLS", "1")
     builtin = tmp_path / "builtin"
     (builtin / "ppt-design").mkdir(parents=True)
     (builtin / "ppt-design" / "SKILL.md").write_text(_md("ppt-design", "shipped"))

@@ -1,4 +1,4 @@
-"""混合架构 P2：桌面壳 → 本机后端身份桥接（core.auth.desktop_bridge）。
+﻿"""混合架构 P2：桌面壳 → 本机后端身份桥接（core.auth.desktop_bridge）。
 
 桥接语义：秘密匹配 + 用户头合法 → 按云端 user_center_id get-or-create 本机
 shadow 用户并授予 CE 管理能力；任何不满足都静默 None（回落常规认证）。
@@ -108,7 +108,7 @@ def test_bridge_is_idempotent_same_identity(db_session, monkeypatch):
 def test_expired_cloud_authorization_preserves_shell_verified_local_identity(db_session, monkeypatch, tmp_path):
     from core.services import desktop_cloud_bridge as cloud
     monkeypatch.setenv(desktop_bridge.BRIDGE_SECRET_ENV, "s3cret")
-    monkeypatch.setenv("HUGAGENT_CAPS_ROOT", str(tmp_path / "caps"))
+    monkeypatch.setenv("LUMINOS_CAPS_ROOT", str(tmp_path / "caps"))
     monkeypatch.setattr(cloud, "get_state", lambda: None)
     monkeypatch.setattr(
         cloud,
@@ -124,7 +124,7 @@ def test_expired_cloud_authorization_preserves_shell_verified_local_identity(db_
 def test_shell_user_center_id_mirrors_the_desktop_shell_namespace():
     from core.services.desktop_cloud_bridge import shell_user_center_id
 
-    assert shell_user_center_id("https://hugagent.quant-chi.com", "u-1") == "cloud:hugagent.quant-chi.com:443:u-1"
+    assert shell_user_center_id("https://luminos.quant-chi.com", "u-1") == "cloud:luminos.quant-chi.com:443:u-1"
     assert shell_user_center_id("http://203.0.113.10:8012/", "u-1") == "cloud:203.0.113.10:8012:u-1"
     assert shell_user_center_id("http://127.0.0.1", "u-1") == "cloud:127.0.0.1:80:u-1"
 
@@ -134,18 +134,18 @@ def test_bridge_user_must_match_the_namespaced_identity(db_session, monkeypatch,
     from core.services import desktop_cloud_bridge as cloud
 
     monkeypatch.setenv(desktop_bridge.BRIDGE_SECRET_ENV, "s3cret")
-    monkeypatch.setenv("HUGAGENT_CAPS_ROOT", str(tmp_path / "caps"))
+    monkeypatch.setenv("LUMINOS_CAPS_ROOT", str(tmp_path / "caps"))
     monkeypatch.setattr(cloud, "get_state", lambda: None)
     monkeypatch.setattr(
         cloud,
         "get_identity_state",
-        lambda: {"user_center_id": "u42", "shell_user_center_id": "cloud:hugagent.quant-chi.com:443:u42"},
+        lambda: {"user_center_id": "u42", "shell_user_center_id": "cloud:luminos.quant-chi.com:443:u42"},
     )
     namespaced = _Req({
         desktop_bridge.BRIDGE_SECRET_HEADER: "s3cret",
-        desktop_bridge.BRIDGE_USER_HEADER: _user_header(user_center_id="cloud:hugagent.quant-chi.com:443:u42"),
+        desktop_bridge.BRIDGE_USER_HEADER: _user_header(user_center_id="cloud:luminos.quant-chi.com:443:u42"),
     })
-    assert desktop_bridge.resolve_bridge_user(namespaced, db_session).user_center_id == "cloud:hugagent.quant-chi.com:443:u42"
+    assert desktop_bridge.resolve_bridge_user(namespaced, db_session).user_center_id == "cloud:luminos.quant-chi.com:443:u42"
     raw = _Req({
         desktop_bridge.BRIDGE_SECRET_HEADER: "s3cret",
         desktop_bridge.BRIDGE_USER_HEADER: _user_header(user_center_id="u42"),

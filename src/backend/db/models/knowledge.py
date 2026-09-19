@@ -1,4 +1,4 @@
-"""SQLAlchemy ORM models — knowledge base / capability catalog."""
+﻿"""SQLAlchemy ORM models — knowledge base / capability catalog."""
 
 from datetime import datetime, timezone
 
@@ -109,7 +109,7 @@ class KBChunk(Base):
     """Knowledge base chunk table - stores parent chunks for context retrieval.
 
     Each document is split into parent chunks (stored here) and child chunks
-    (vectorised in Milvus hugagent_kb_private collection). Retrieval finds child
+    (vectorised in Milvus luminos_kb_private collection). Retrieval finds child
     chunks via vector search, then fetches the parent content from this table.
     """
 

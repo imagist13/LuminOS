@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
-Security self-test for HugAgentOS.
+Security self-test for LuminOS.
 
 Tests security features including:
 - Authentication and authorization

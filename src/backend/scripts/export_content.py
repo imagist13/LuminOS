@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """
 Export release notes and capability-center data for cross-environment migration.
 
@@ -220,7 +220,7 @@ def main() -> None:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     print("=" * 50)
-    print("HugAgentOS 数据导出")
+    print("LuminOS 数据导出")
     print("=" * 50)
 
     # ── 1. Release notes ─────────────────────────────────────────────────

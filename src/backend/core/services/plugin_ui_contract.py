@@ -1,4 +1,4 @@
-"""Plugin UI contribution contract: validate / normalize ``extensions["org.hugagent"].ui``.
+﻿"""Plugin UI contribution contract: validate / normalize ``extensions["org.luminos"].ui``.
 
 A plugin contributes **capabilities** (skills + MCP) through the rest of the
 plugin system; this module is what lets it also contribute **interface**.  The
@@ -602,7 +602,7 @@ def normalize_ui(manifest_ui: Any) -> Tuple[Optional[Dict[str, Any]], List[Dict[
     if version > SUPPORTED_UI_VERSION:
         dropper.drop(
             "ui", f"version={version}",
-            f"契约版本高于当前平台支持的 {SUPPORTED_UI_VERSION}，已整块忽略（请升级 HugAgentOS）",
+            f"契约版本高于当前平台支持的 {SUPPORTED_UI_VERSION}，已整块忽略（请升级 LuminOS）",
         )
         return None, dropper.dropped
 

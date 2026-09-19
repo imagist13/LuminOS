@@ -1,4 +1,4 @@
-"""A lost cloud write response must survive Toolkit error conversion."""
+﻿"""A lost cloud write response must survive Toolkit error conversion."""
 
 from types import SimpleNamespace
 import httpx
@@ -23,7 +23,7 @@ from tests.orchestration.test_tool_effect_ledger import effect_env
 async def test_ambiguous_cloud_write_stops_run_without_committed_error_or_replay(
     effect_env, monkeypatch, failure
 ):
-    monkeypatch.delenv("HUGAGENT_CAPS_ROOT", raising=False)
+    monkeypatch.delenv("LUMINOS_CAPS_ROOT", raising=False)
     sessions, make_run = effect_env
     make_run("cloud-write")
     calls = 0
@@ -76,7 +76,7 @@ async def test_ambiguous_cloud_write_stops_run_without_committed_error_or_replay
 @pytest.mark.asyncio
 @pytest.mark.parametrize("status", [401, 403, 404, 409])
 async def test_rejected_write_does_not_claim_an_unknown_effect(monkeypatch, status):
-    monkeypatch.delenv("HUGAGENT_CAPS_ROOT", raising=False)
+    monkeypatch.delenv("LUMINOS_CAPS_ROOT", raising=False)
 
     async def rejected(_request):
         return httpx.Response(status, json={"detail": "not authorized or stale schema"})
@@ -88,7 +88,7 @@ async def test_rejected_write_does_not_claim_an_unknown_effect(monkeypatch, stat
 
 @pytest.mark.asyncio
 async def test_read_only_timeout_remains_an_ordinary_recoverable_error(monkeypatch):
-    monkeypatch.delenv("HUGAGENT_CAPS_ROOT", raising=False)
+    monkeypatch.delenv("LUMINOS_CAPS_ROOT", raising=False)
 
     async def timeout(request):
         raise httpx.ReadTimeout("lost read response", request=request)

@@ -1,11 +1,11 @@
-"""Full production-chain integration test: LoopService creates loop -> start_autonomous_loop_run(ChatRun)
+﻿"""Full production-chain integration test: LoopService creates loop -> start_autonomous_loop_run(ChatRun)
 -> driver runs (worker does the work + a read-only reviewer sub-agent personally verifies the real output) -> persist_result writes to DB.
 
 No-script verification: the verdict comes from review_requirement opening the produced real file and checking it. Here we use a simple goal not bound to any project
 (worker writes a /workspace file, the reviewer reads /workspace of the same session); passing it proves the whole chain
 "worker -> reviewer sub-agent -> flip -> persist" works. Requires real LLM/sandbox.
 
-    docker exec hugagent-backend python /app/src/backend/scripts/_loop_integration_test.py
+    docker exec luminos-backend python /app/src/backend/scripts/_loop_integration_test.py
 """
 import asyncio
 

@@ -1,4 +1,4 @@
-"""mcp.json：单写入者、generation 校验、损坏不重置、local 区校验、managed 投影、凭据引用。"""
+﻿"""mcp.json：单写入者、generation 校验、损坏不重置、local 区校验、managed 投影、凭据引用。"""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from core.capabilities import credentials, mcp_json
 
 @pytest.fixture(autouse=True)
 def _mem_store(monkeypatch, caps_root):
-    monkeypatch.setenv("HUGAGENT_CREDENTIAL_BACKEND", "memory")
+    monkeypatch.setenv("LUMINOS_CREDENTIAL_BACKEND", "memory")
     credentials._memory_store.clear()
 
 

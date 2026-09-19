@@ -1,4 +1,4 @@
-"""Shared helpers used by catalog_loader and catalog_migration.
+﻿"""Shared helpers used by catalog_loader and catalog_migration.
 
 Kept in a separate module to avoid circular imports between the two.
 """
@@ -50,7 +50,7 @@ def _item(
         "kind": kind,
         "name": name,
         "description": description,
-        # `desc` is kept for compatibility with hugagent-ui-react type expectations.
+        # `desc` is kept for compatibility with luminos-ui-react type expectations.
         "desc": description,
         "enabled": bool(enabled),
         "version": version,

@@ -1,4 +1,4 @@
-"""User-facing MCP marketplace: browse, install, and submit private remote MCPs."""
+﻿"""User-facing MCP marketplace: browse, install, and submit private remote MCPs."""
 
 from __future__ import annotations
 
@@ -146,7 +146,7 @@ async def oauth_callback(
     )
     return HTMLResponse(
         "<!doctype html><meta charset='utf-8'><title>OAuth</title>"
-        "<p>OAuth 登录结果已返回 HugAgentOS，可以关闭此窗口。</p>"
+        "<p>OAuth 登录结果已返回 LuminOS，可以关闭此窗口。</p>"
         "<script>window.close()</script>"
     )
 

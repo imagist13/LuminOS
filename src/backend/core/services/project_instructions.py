@@ -1,4 +1,4 @@
-"""Project-root AGENTS.md storage shared by CE and EE.
+﻿"""Project-root AGENTS.md storage shared by CE and EE.
 
 Callers must authorize reads. Writes independently require project edit access.
 File content is authoritative; the database field is only a legacy fallback.
@@ -39,7 +39,7 @@ def _decode(data: bytes) -> str:
 @contextmanager
 def _local_write_lock(target: Path):
     """Serialize desktop writers across threads/processes, including SQLite."""
-    directory = Path(tempfile.gettempdir()) / "hugagent-instruction-locks"
+    directory = Path(tempfile.gettempdir()) / "luminos-instruction-locks"
     directory.mkdir(mode=0o700, exist_ok=True)
     key = hashlib.sha256(str(target).encode()).hexdigest()
     # Keep the lock inode stable: unlinking it would allow separate concurrent locks.

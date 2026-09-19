@@ -1,4 +1,4 @@
-"""MCP server configuration service (DB-driven, cached).
+﻿"""MCP server configuration service (DB-driven, cached).
 
 Reads MCP server configs from the admin_mcp_servers table and provides
 them in the same dict format that MCPConnectionPool and agent_factory
@@ -50,7 +50,7 @@ def _rewrite_builtin_mcp_host(url: str) -> str:
         port = parts.port
         if port:
             # 插件清单只知道内置服务器的基准端口；本机执行面按品牌端口命名空间
-            # （HUGAGENT_LOCAL_MCP_PORT_OFFSET）监听，地址要按同一登记表换算。
+            # （LUMINOS_LOCAL_MCP_PORT_OFFSET）监听，地址要按同一登记表换算。
             from mcp_servers._ports import _BASE_PORTS, PORTS
 
             port = {base: PORTS[sid] for sid, base in _BASE_PORTS.items()}.get(port, port)

@@ -1,4 +1,4 @@
-"""桌面双端「云端能力面」服务（云端侧）。
+﻿"""桌面双端「云端能力面」服务（云端侧）。
 
 双端模式下，桌面本机后端不再各自维护一套 MCP 能力，而是从云端拉取
 「当前用户最终可用」的 MCP 清单（manifest），并把工具调用经云端能力网关
@@ -54,7 +54,7 @@ logger = logging.getLogger(__name__)
 # Access tokens are memory-only credentials; only the shell renews them from
 # its still-valid session. Legacy dcap1 tokens are deliberately not accepted.
 CAPABILITY_TOKEN_TTL_S = 10 * 60
-CAPABILITY_AUDIENCE = "hugagent-desktop-runtime"
+CAPABILITY_AUDIENCE = "luminos-desktop-runtime"
 CAPABILITY_SCOPE = "desktop_runtime"
 CAPABILITY_DEVICE_HEADER = "x-desktop-device-id"
 

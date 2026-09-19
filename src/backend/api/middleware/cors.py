@@ -1,4 +1,4 @@
-"""CORS middleware configuration."""
+﻿"""CORS middleware configuration."""
 
 import logging
 import re
@@ -96,7 +96,7 @@ def setup_cors(app: FastAPI) -> None:
         allow_methods=["*"],
         allow_headers=["*"],
         # 跨源时前端要读得到能力变更号，否则桌面端发现不了云端改动。
-        expose_headers=["x-trace-id", "x-hugagent-capability-epoch"],
+        expose_headers=["x-trace-id", "x-luminos-capability-epoch"],
     )
     # Added last = outermost executes first: site API preflight bypasses the global credentials whitelist logic
     app.add_middleware(SiteApiCorsMiddleware)

@@ -1,4 +1,4 @@
-"""Real dynamic model objects must keep their captured desktop authorization epoch."""
+﻿"""Real dynamic model objects must keep their captured desktop authorization epoch."""
 
 import base64
 import json
@@ -37,7 +37,7 @@ def state(
 @pytest_asyncio.fixture
 async def models(monkeypatch, caps_root):
     current = {"state": state()}
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
     monkeypatch.setattr(
         bridge, "get_state", lambda: dict(current["state"]) if current["state"] else None
     )
@@ -129,7 +129,7 @@ async def test_logout_never_returns_cached_cloud_model(models, kind):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("kind", ["main", "provider"])
 async def test_non_desktop_retains_mode_and_config_version_cache(models, monkeypatch, kind):
-    monkeypatch.delenv("HUGAGENT_DESKTOP_BRIDGE_SECRET")
+    monkeypatch.delenv("LUMINOS_DESKTOP_BRIDGE_SECRET")
     models["configure"](state(), direct=True)
 
     def forbidden():

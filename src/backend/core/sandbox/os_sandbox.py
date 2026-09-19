@@ -1,4 +1,4 @@
-"""OS-level sandbox wrapping for desktop local execution (tickets #09 / #12).
+﻿"""OS-level sandbox wrapping for desktop local execution (tickets #09 / #12).
 
 The local host-subprocess sandbox runs bash as the user with no filesystem jail —
 the string-level policy gate (``local_policy``) is defense-in-depth, not
@@ -11,7 +11,7 @@ no writable host path. Reads stay open, matching the reference sandbox modes.
 - **Linux**: ``bwrap`` (bubblewrap) with a read-only root + writable binds.
 - **Windows**: no filesystem-confining runner is currently bundled.
 
-The sandbox is enabled by default; ``HUGAGENT_LOCAL_OS_SANDBOX=0`` is an
+The sandbox is enabled by default; ``LUMINOS_LOCAL_OS_SANDBOX=0`` is an
 explicit administrative disable. Whether an unavailable backend is fatal is
 **not decided here** — :func:`confinement_unavailable_reason` reports the fact
 and the caller's permission preset decides (see
@@ -42,7 +42,7 @@ class OsSandboxUnavailableError(RuntimeError):
 
 
 def os_sandbox_enabled() -> bool:
-    raw = os.getenv("HUGAGENT_LOCAL_OS_SANDBOX", "").strip().casefold()
+    raw = os.getenv("LUMINOS_LOCAL_OS_SANDBOX", "").strip().casefold()
     return raw not in ("0", "false", "no", "off")
 
 
@@ -61,7 +61,7 @@ def confinement_unavailable_reason(platform: Optional[str] = None) -> str:
     the permission policy instead of at each execution site.
     """
     if not os_sandbox_enabled():
-        return "本机 OS 沙箱已被 HUGAGENT_LOCAL_OS_SANDBOX 显式关闭"
+        return "本机 OS 沙箱已被 LUMINOS_LOCAL_OS_SANDBOX 显式关闭"
     plat = platform or _current_platform()
     runner = confinement_runner(plat)
     if not runner:
