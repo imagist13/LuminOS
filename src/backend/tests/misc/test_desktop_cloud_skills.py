@@ -1,4 +1,4 @@
-"""桌面双端技能：清单 → 安装意图；同一轮同步即下载发布 → 存储层 revision → 运行视图联接；无镜像拷贝。"""
+﻿"""桌面双端技能：清单 → 安装意图；同一轮同步即下载发布 → 存储层 revision → 运行视图联接；无镜像拷贝。"""
 
 from __future__ import annotations
 
@@ -143,8 +143,8 @@ _PROFILE = profile_id(_STATE["cloud_base"], "u-1")
 def dirs(tmp_path, monkeypatch, index_db):
     workspace = tmp_path / "workspace"
     monkeypatch.setenv("SANDBOX_SKILLS_DIR", str(workspace / "skills"))
-    monkeypatch.setenv("HUGAGENT_CAPS_ROOT", str(tmp_path / "caps"))
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "test-secret")
+    monkeypatch.setenv("LUMINOS_CAPS_ROOT", str(tmp_path / "caps"))
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "test-secret")
     builtin = tmp_path / "builtin"
     (builtin / "ppt-design").mkdir(parents=True)
     (builtin / "ppt-design" / "SKILL.md").write_text(_skill_md("ppt-design", "old"))
@@ -321,7 +321,7 @@ def test_account_switch_keeps_files_isolated_per_profile(dirs, monkeypatch):
 def test_cloud_source_registered_only_with_store(dirs, monkeypatch):
     names = [s.name for s in skill_config.get_default_skill_sources()]
     assert names[-1] == "cloud" and "user" not in names
-    monkeypatch.delenv("HUGAGENT_CAPS_ROOT")
+    monkeypatch.delenv("LUMINOS_CAPS_ROOT")
     names = [s.name for s in skill_config.get_default_skill_sources()]
     assert "cloud" not in names and "user" in names
 

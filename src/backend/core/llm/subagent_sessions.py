@@ -1,4 +1,4 @@
-"""Resumable sub-agent sessions for ``call_subagent``.
+﻿"""Resumable sub-agent sessions for ``call_subagent``.
 
 A dispatch normally ends with the child agent's context discarded, so a
 follow-up task restarts from zero and re-reads the same files, re-runs the same
@@ -22,7 +22,7 @@ from core.llm.human_interaction import STREAM_TTL_SECONDS
 
 logger = logging.getLogger(__name__)
 
-_KEY_PREFIX = "hugagent:subagent_session:"
+_KEY_PREFIX = "luminos:subagent_session:"
 
 # A resumable handle is only useful while the run that created it is still
 # alive, so it expires with the run's own ephemeral state.

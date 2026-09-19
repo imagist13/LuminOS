@@ -1,10 +1,10 @@
-"""真实端到端：把各类工具挨个对「我的空间」跑一遍（真 DB + 真对象存储 + 真 opensandbox）。
+﻿"""真实端到端：把各类工具挨个对「我的空间」跑一遍（真 DB + 真对象存储 + 真 opensandbox）。
 
 覆盖 CreateFolder / Write / Read / Edit / Glob / Grep / list_myspace_files / bash /
 Move / Delete / sandbox_get_artifact，并回查数据库真值。所有对象用 __tt__ 前缀、结尾硬清理。
 
 pytest 不收集（文件名以 e2e_ 开头），在 backend 容器里手动跑：
-    docker exec -e E2E_USER_ID=<真实用户号> hugagent-backend \
+    docker exec -e E2E_USER_ID=<真实用户号> luminos-backend \
         python src/backend/tests/sandbox/e2e_myspace_tools_live.py
 """
 from __future__ import annotations

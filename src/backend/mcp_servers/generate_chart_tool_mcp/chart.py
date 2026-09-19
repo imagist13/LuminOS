@@ -1,4 +1,4 @@
-"""
+﻿"""
 ChartAgent：调用 LLM 生成 matplotlib 绘图代码，执行后保存为 PNG artifact。
 """
 import io
@@ -35,7 +35,7 @@ from core.artifacts.store import save_artifact_bytes
 
 # 方正中文字体目录解析（与源码位置解耦）：
 #   1. JX_FONT_DIR 环境变量覆盖
-# 目录必须真的装有字体文件才算命中：桌面本地模式会预创建空的 ~/.hugagent/fonts，
+# 目录必须真的装有字体文件才算命中：桌面本地模式会预创建空的 ~/.luminos/fonts，
 # 若空目录也算命中会挡住后面的候选，最终中文全部渲染成方块。
 _FONT_EXTS = (".ttf", ".ttc", ".otf")
 

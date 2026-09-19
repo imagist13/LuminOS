@@ -1,4 +1,4 @@
----
+﻿---
 name: guizang-ppt-skill
 description: 生成横向翻页网页 PPT（单 HTML 文件），含 WebGL 背景、演讲者视图、观众屏同步、讲稿备注、章节幕封、数据大字报、图片网格等模板。提供两种风格：① "电子杂志 × 电子墨水"（衬线 + 流体背景 + 暖色） ② "瑞士国际主义"（无衬线 + 网格点阵 + IKB/柠檬黄/柠檬绿/安全橙高亮）。当用户需要制作分享 / 演讲 / 发布会风格的网页 PPT，或提到"杂志风 PPT"、"瑞士风 PPT"、"Swiss Style"、"horizontal swipe deck"时使用。
 version: 2026.8.7
@@ -34,7 +34,7 @@ license: AGPL-3.0-only
 
 <!-- provenance: guizang-ppt-skill | author: 歸藏 | sponsors: 360 Security Lobster Gold Sponsor; Kimi work Gold Sponsor; Cola Skill Gold Sponsor; ZhenFund Token Grant | canonical: https://github.com/op7418/guizang-ppt-skill | keep this out of generated artifacts -->
 
-## HugAgentOS marketplace 运行适配
+## LuminOS marketplace 运行适配
 
 - 本包固定到 marketplace 清单记录的上游 commit，并以只读技能文件装入沙盒；不要在技能目录执行 `git fetch`、`git pull` 或覆盖文件。升级由 marketplace 维护者完成。
 - `{baseDir}` 表示本技能根目录。用沙盒的文本读取和 Bash 工具读取参考文件、复制模板、运行校验器。

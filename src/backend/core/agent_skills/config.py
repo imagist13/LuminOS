@@ -1,4 +1,4 @@
-"""Configuration for multi-source skill loading."""
+﻿"""Configuration for multi-source skill loading."""
 
 from __future__ import annotations
 
@@ -27,16 +27,16 @@ def get_default_skill_sources() -> List[SkillSourceConfig]:
     Priority levels:
     - Built-in (priority=0): skill_bundles/
     - Admin (priority=75): /app/storage/admin_skills/
-    - User (priority=50): ~/.hugagent/skills/
-    - Project (priority=100): .hugagent/skills/
+    - User (priority=50): ~/.luminos/skills/
+    - Project (priority=100): .luminos/skills/
 
     Environment variables:
-    - HUGAGENT_ADMIN_SKILLS_DIR: Override admin skills directory
-    - HUGAGENT_USER_SKILLS_DIR: Override user skills directory
-    - HUGAGENT_PROJECT_SKILLS_DIR: Override project skills directory
-    - HUGAGENT_DISABLE_ADMIN_SKILLS: Disable admin skills (set to "1" or "true")
-    - HUGAGENT_DISABLE_USER_SKILLS: Disable user skills (set to "1" or "true")
-    - HUGAGENT_DISABLE_PROJECT_SKILLS: Disable project skills (set to "1" or "true")
+    - LUMINOS_ADMIN_SKILLS_DIR: Override admin skills directory
+    - LUMINOS_USER_SKILLS_DIR: Override user skills directory
+    - LUMINOS_PROJECT_SKILLS_DIR: Override project skills directory
+    - LUMINOS_DISABLE_ADMIN_SKILLS: Disable admin skills (set to "1" or "true")
+    - LUMINOS_DISABLE_USER_SKILLS: Disable user skills (set to "1" or "true")
+    - LUMINOS_DISABLE_PROJECT_SKILLS: Disable project skills (set to "1" or "true")
 
     Returns:
         List of SkillSourceConfig in priority order (lowest to highest).
@@ -60,10 +60,10 @@ def get_default_skill_sources() -> List[SkillSourceConfig]:
 
     # 2. Admin skills (managed via admin backend)
     admin_skills_dir = os.getenv(
-        "HUGAGENT_ADMIN_SKILLS_DIR",
+        "LUMINOS_ADMIN_SKILLS_DIR",
         "/app/storage/admin_skills/",
     )
-    admin_disabled = os.getenv("HUGAGENT_DISABLE_ADMIN_SKILLS", "").lower() in (
+    admin_disabled = os.getenv("LUMINOS_DISABLE_ADMIN_SKILLS", "").lower() in (
         "1",
         "true",
         "yes",
@@ -86,10 +86,10 @@ def get_default_skill_sources() -> List[SkillSourceConfig]:
     #    the store (profile sub-trees); hand-dropped folders are imported into
     #    the ``local`` profile by the startup migration instead of being scanned.
     user_skills_dir = os.getenv(
-        "HUGAGENT_USER_SKILLS_DIR",
-        "~/.hugagent/skills",
+        "LUMINOS_USER_SKILLS_DIR",
+        "~/.luminos/skills",
     )
-    user_disabled = os.getenv("HUGAGENT_DISABLE_USER_SKILLS", "").lower() in (
+    user_disabled = os.getenv("LUMINOS_DISABLE_USER_SKILLS", "").lower() in (
         "1",
         "true",
         "yes",
@@ -106,10 +106,10 @@ def get_default_skill_sources() -> List[SkillSourceConfig]:
 
     # 4. Project skills
     project_skills_dir = os.getenv(
-        "HUGAGENT_PROJECT_SKILLS_DIR",
-        ".hugagent/skills",
+        "LUMINOS_PROJECT_SKILLS_DIR",
+        ".luminos/skills",
     )
-    project_disabled = os.getenv("HUGAGENT_DISABLE_PROJECT_SKILLS", "").lower() in (
+    project_disabled = os.getenv("LUMINOS_DISABLE_PROJECT_SKILLS", "").lower() in (
         "1",
         "true",
         "yes",
@@ -181,7 +181,7 @@ def get_sandbox_skills_dir() -> Path:
         candidate.mkdir(parents=True, exist_ok=True)
         return candidate.resolve()
     except Exception:  # noqa: BLE001 — non-Docker/local fallback
-        fallback = Path.home() / ".cache" / "hugagent" / "skills"
+        fallback = Path.home() / ".cache" / "luminos" / "skills"
         fallback.mkdir(parents=True, exist_ok=True)
         return fallback.resolve()
 

@@ -1,4 +1,4 @@
-"""本机能力接口：登录同步即全部就绪、只读的来源清单、视图重建。"""
+﻿"""本机能力接口：登录同步即全部就绪、只读的来源清单、视图重建。"""
 
 from __future__ import annotations
 
@@ -97,8 +97,8 @@ class _Cloud:
 @pytest.fixture
 def client(tmp_path, monkeypatch, index_db):
     monkeypatch.setenv("SANDBOX_SKILLS_DIR", str(tmp_path / "ws" / "skills"))
-    monkeypatch.setenv("HUGAGENT_CAPS_ROOT", str(tmp_path / "caps"))
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "s")
+    monkeypatch.setenv("LUMINOS_CAPS_ROOT", str(tmp_path / "caps"))
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "s")
     builtin = tmp_path / "builtin"
     (builtin / "ppt-design").mkdir(parents=True)
     (builtin / "ppt-design" / "SKILL.md").write_text(_md("ppt-design", "old"))
@@ -182,5 +182,5 @@ def test_manual_management_endpoints_are_gone(client):
 
 
 def test_endpoints_refuse_outside_desktop_store(client, monkeypatch):
-    monkeypatch.delenv("HUGAGENT_CAPS_ROOT")
+    monkeypatch.delenv("LUMINOS_CAPS_ROOT")
     assert client.get("/v1/desktop/capabilities/installations").status_code == 403

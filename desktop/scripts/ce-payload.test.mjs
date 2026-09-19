@@ -1,4 +1,4 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import {
   existsSync,
   mkdtempSync,
@@ -28,10 +28,10 @@ function git(root, args) {
 }
 
 function createCeFixture() {
-  const root = mkdtempSync(join(tmpdir(), "hugagent-ce-payload-"));
+  const root = mkdtempSync(join(tmpdir(), "luminos-ce-payload-"));
   mkdirSync(join(root, "desktop"), { recursive: true });
   mkdirSync(join(root, "src", "backend"), { recursive: true });
-  writeFileSync(join(root, ".hugagent-edition"), "ce\n");
+  writeFileSync(join(root, ".luminos-edition"), "ce\n");
   writeFileSync(
     join(root, ".gitignore"),
     "desktop/generated/\nuntracked.txt\n",
@@ -41,7 +41,7 @@ function createCeFixture() {
   git(root, ["init", "--quiet"]);
   git(root, ["config", "user.name", "Release Test"]);
   git(root, ["config", "user.email", "release-test@example.com"]);
-  git(root, ["add", ".hugagent-edition", ".gitignore", "src/backend/app.py"]);
+  git(root, ["add", ".luminos-edition", ".gitignore", "src/backend/app.py"]);
   git(root, ["commit", "--quiet", "-m", "fixture"]);
   return root;
 }
@@ -55,7 +55,7 @@ test("stages only tracked files from an already-derived CE repository", () => {
       3,
     );
     assert.equal(
-      readFileSync(join(output, ".hugagent-edition"), "utf8"),
+      readFileSync(join(output, ".luminos-edition"), "utf8"),
       "ce\n",
     );
     assert.equal(
@@ -130,7 +130,7 @@ test("rejects release staging when a non-ignored untracked file exists", () => {
 });
 
 test("rejects fallback staging without the derived CE marker", () => {
-  const root = mkdtempSync(join(tmpdir(), "hugagent-not-ce-"));
+  const root = mkdtempSync(join(tmpdir(), "luminos-not-ce-"));
   try {
     assert.throws(
       () => assertDerivedCeRepository(root),
@@ -143,7 +143,7 @@ test("rejects fallback staging without the derived CE marker", () => {
 
 test("rejects a payload output outside the repository", () => {
   const root = createCeFixture();
-  const output = mkdtempSync(join(tmpdir(), "hugagent-ce-output-"));
+  const output = mkdtempSync(join(tmpdir(), "luminos-ce-output-"));
   try {
     assert.throws(
       () => stageTrackedCeRepository(root, output),

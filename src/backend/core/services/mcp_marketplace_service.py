@@ -1,4 +1,4 @@
-"""MCP marketplace lifecycle: submit, review, publish, install, and suspend.
+﻿"""MCP marketplace lifecycle: submit, review, publish, install, and suspend.
 
 Marketplace rows are credential-free reviewed snapshots.  Installation creates
 or updates an ``AdminMcpServer`` owned by the installing user (or global for an
@@ -129,7 +129,7 @@ def ensure_curated_market_items(db: Session) -> List[str]:
             tags=list(definition.get("tags") or []),
             icon=str(definition.get("icon") or ""),
             publisher_id=None,
-            publisher_name=str(definition.get("publisher_name") or "HugAgentOS"),
+            publisher_name=str(definition.get("publisher_name") or "LuminOS"),
             source="admin",
             latest_version_id=version_id,
             status="active",

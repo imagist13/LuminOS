@@ -1,4 +1,4 @@
-"""Plugin system tests: import Claude Code / Codex / native plugin packages → persist to DB → uninstall.
+﻿"""Plugin system tests: import Claude Code / Codex / native plugin packages → persist to DB → uninstall.
 
 Covers the three-tier portability matrix: direct skill import (including
 references + path-variable rewriting), direct remote MCP import, stdio MCP
@@ -815,7 +815,7 @@ def test_route_import_and_uninstall_e2e(tmp_path, db_session):
 
 def _make_standard_plugin(root: Path) -> Path:
     """Build an Agent Plugins standard package: closed-schema plugin.json +
-    extensions["org.hugagent"] + standalone mcp.json with type discriminators."""
+    extensions["org.luminos"] + standalone mcp.json with type discriminators."""
     pdir = root / "std-toolkit"
     pdir.mkdir(parents=True)
     (pdir / "plugin.json").write_text(
@@ -828,7 +828,7 @@ def _make_standard_plugin(root: Path) -> Path:
                 "author": {"name": "Acme", "url": "https://acme.example"},
                 "keywords": ["demo"],
                 "extensions": {
-                    "org.hugagent": {
+                    "org.luminos": {
                         "connection": "lark",
                         "required_secrets": [{"key": "api_key", "label": "API Key"}],
                         "admin_config": {

@@ -1,8 +1,8 @@
-"""Where the desktop capability store lives.
+﻿"""Where the desktop capability store lives.
 
-``HUGAGENT_CAPS_ROOT`` is injected by the desktop shell (Windows:
+``LUMINOS_CAPS_ROOT`` is injected by the desktop shell (Windows:
 ``%LOCALAPPDATA%\\<app identifier>``) and defaulted by the local CLI profile to
-``HUGAGENT_HOME``. It is *unset* on cloud deployments, which disables the file
+``LUMINOS_HOME``. It is *unset* on cloud deployments, which disables the file
 store entirely — every function here that needs the root raises when it is
 missing rather than guessing a location.
 """
@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 from typing import Optional
 
-CAPS_ROOT_ENV = "HUGAGENT_CAPS_ROOT"
+CAPS_ROOT_ENV = "LUMINOS_CAPS_ROOT"
 
 KIND_SKILL = "skill"
 KIND_PLUGIN = "plugin"

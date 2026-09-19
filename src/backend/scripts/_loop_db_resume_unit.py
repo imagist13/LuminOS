@@ -1,11 +1,11 @@
-"""Deterministic unit check: resume from the DB mirror ledger (phenomenon-1 fix).
+﻿"""Deterministic unit check: resume from the DB mirror ledger (phenomenon-1 fix).
 
 Simulates the resume scenario where "the sandbox has been wiped (rebuild/restart) but the DB still has a ledger": all sandbox reads return empty
 (_read_ledger->None), and load_ledger returns only a ledger of "R1 passed, R2 not passed, iteration=3".
 Asserts the driver **resumes from the DB ledger** (seq starts from 3, no re-decompose to re-split the goal), and reaches completed after R2 passes.
 Also verifies save_ledger receives mirror writes throughout. No real LLM/sandbox/git, <1s.
 
-Run: docker exec hugagent-backend python -m scripts._loop_db_resume_unit
+Run: docker exec luminos-backend python -m scripts._loop_db_resume_unit
 """
 import asyncio
 

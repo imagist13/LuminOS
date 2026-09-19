@@ -1,13 +1,13 @@
-{
+﻿{
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "plugin-manager",
   "version": "1.0.0",
   "description": "管插件：搜插件市场、看某插件会带来哪些能力、安装（可填凭据）、停用/启用、卸载，以及导入自制或网址来的插件包。用户说「装个能做 X 的插件」「我装了哪些插件」「把那个插件卸了」时加载。只管插件本身；技能归 skill-manager，智能体归 agent-manager。",
   "author": {
-    "name": "HugAgentOS"
+    "name": "LuminOS"
   },
   "extensions": {
-    "org.hugagent": {
+    "org.luminos": {
       "mcp": {
         "plugin_manager": {
           "display_name": "插件管理",

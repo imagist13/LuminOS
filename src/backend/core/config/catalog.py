@@ -1,6 +1,6 @@
-"""Project-local capability catalog.
+﻿"""Project-local capability catalog.
 
-Frontend contract (hugagent-ui-react) expects:
+Frontend contract (luminos-ui-react) expects:
 {
   "skills": [...],
   "agents": [...],

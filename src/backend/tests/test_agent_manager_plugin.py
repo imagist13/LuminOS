@@ -1,4 +1,4 @@
-"""agent-manager plugin self-contained tests: plugin persistence + all 8 MCP verbs end to end.
+﻿"""agent-manager plugin self-contained tests: plugin persistence + all 8 MCP verbs end to end.
 
 Coverage targets (matching the goal "create, manage, delete, and submit sub-agents for listing"):
 - Installing the agent-manager plugin → AdminSkill(agent-designer) + AdminMcpServer(agent_manager)
@@ -72,7 +72,7 @@ def test_bundle_manifest_is_wellformed():
     mcp_json = json.loads((BUNDLE_DIR / "mcp.json").read_text(encoding="utf-8"))
 
     assert manifest["name"] == "agent-manager"
-    ext_mcp = manifest["extensions"]["org.hugagent"]["mcp"]
+    ext_mcp = manifest["extensions"]["org.luminos"]["mcp"]
     assert set(ext_mcp) == set(mcp_json["mcpServers"]), "扩展段的服务名必须与 mcp.json 一一对应"
     assert mcp_json["mcpServers"]["agent_manager"]["url"] == "http://mcp:9115/mcp/"
 
@@ -404,7 +404,7 @@ def test_tool_description_lists_the_real_categories():
     assert len(cats) == 9
 
     manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8"))
-    tools = manifest["extensions"]["org.hugagent"]["mcp"]["agent_manager"]["tools"]
+    tools = manifest["extensions"]["org.luminos"]["mcp"]["agent_manager"]["tools"]
     desc = next(t["description"] for t in tools if t["name"] == "submit_agent_to_market")
     doc = server.submit_agent_to_market.__doc__ or ""
     for c in cats:

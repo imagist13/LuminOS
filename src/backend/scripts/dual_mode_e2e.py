@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """桌面双端（云端 + 本机执行面）能力安装端到端验收。
 
 前提（由调用方准备）：
   * 一个"云端"后端：完整树代码，Postgres，AUTH_MODE=mock（Bearer <name> 即该用户），
     通过 ``scripts/desktop_cloud_wrapper.py`` 挂在 ``/api`` 之下；
-  * 一个"本机"后端：``cli.py serve``（local 档位），注入 HUGAGENT_DESKTOP_BRIDGE_SECRET /
-    CONFIG_TOKEN / HUGAGENT_CAPS_ROOT；
+  * 一个"本机"后端：``cli.py serve``（local 档位），注入 LUMINOS_DESKTOP_BRIDGE_SECRET /
+    CONFIG_TOKEN / LUMINOS_CAPS_ROOT；
   * 本机能访问 ``docker exec <pg-container> psql``（云端库的能力位授予与断言用）。
 
 场景（每一步落到 JSON 报告，不以聊天正文为准）：
@@ -114,7 +114,7 @@ class Cloud:
 
     def psql(self, db: str, sql: str) -> str:
         out = subprocess.run(
-            ["docker", "exec", self.pg, "psql", "-U", "hugagent_user", "-d", db, "-Atc", sql],
+            ["docker", "exec", self.pg, "psql", "-U", "luminos_user", "-d", db, "-Atc", sql],
             capture_output=True,
             text=True,
             check=True,
@@ -484,7 +484,7 @@ def _read_view_marker(view: Optional[Path], device_home: Path) -> Optional[str]:
         return None
     relative = str(view.relative_to(device_home) / "marker.txt")
     code = (
-        "from pathlib import Path; import os; p=Path(os.environ['HUGAGENT_HOME'])/"
+        "from pathlib import Path; import os; p=Path(os.environ['LUMINOS_HOME'])/"
         + repr(relative)
         + "; print(p.read_text(), end='')"
     )
@@ -539,10 +539,10 @@ def main() -> int:
     ap.add_argument("--device", required=True, help="本机后端地址，如 http://127.0.0.1:32101")
     ap.add_argument("--bridge-secret", required=True)
     ap.add_argument("--config-token", required=True)
-    ap.add_argument("--device-root", required=True, help="HUGAGENT_CAPS_ROOT")
-    ap.add_argument("--device-home", required=True, help="HUGAGENT_HOME")
-    ap.add_argument("--pg-container", default="hugagent-postgres")
-    ap.add_argument("--cloud-db", default="hugagent_captest")
+    ap.add_argument("--device-root", required=True, help="LUMINOS_CAPS_ROOT")
+    ap.add_argument("--device-home", required=True, help="LUMINOS_HOME")
+    ap.add_argument("--pg-container", default="luminos-postgres")
+    ap.add_argument("--cloud-db", default="luminos_captest")
     ap.add_argument("--cloud-container", default="capcloud")
     ap.add_argument("--run-id", default=secrets.token_hex(4))
     ap.add_argument("--report", required=True)

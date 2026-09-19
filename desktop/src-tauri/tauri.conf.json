@@ -1,8 +1,8 @@
-{
+﻿{
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "HugAgentOS",
+  "productName": "LuminOS",
   "version": "0.5.24",
-  "identifier": "com.hugagent.desktop",
+  "identifier": "com.luminos.desktop",
   "build": {
     "frontendDist": "../../src/frontend/dist",
     "beforeBuildCommand": "npm --prefix ../src/frontend run build",
@@ -47,7 +47,7 @@
     "deep-link": {
       "desktop": {
         "schemes": [
-          "hugagent"
+          "luminos"
         ]
       }
     },

@@ -1,4 +1,4 @@
-"""Deterministic unit check: exit paths of the requirement ledger + read-only review sub-agent.
+﻿"""Deterministic unit check: exit paths of the requirement ledger + read-only review sub-agent.
 
 驱动器 v2（去预算化 + 规划器侦察/重规划 + 混合验收）后的收敛冒烟：不跑真实
 LLM/沙箱/git，桩掉 worker/规划/评审/沙箱，验证三条出口：
@@ -6,7 +6,7 @@ LLM/沙箱/git，桩掉 worker/规划/评审/沙箱，验证三条出口：
   B. 单需求连续无推进 → stalls 到停滞上限 → blocked →（重规划桩返回 None）→
      budget_exhausted 部分完成；
   C. done 被二次复核驳回 → 不翻牌，直至 blocked。
-完成 <1s。Run: docker exec hugagent-backend python -m scripts._loop_convergence_unit
+完成 <1s。Run: docker exec luminos-backend python -m scripts._loop_convergence_unit
 （正式回归见 tests/orchestration/test_autonomous_loop_driver.py）
 """
 import asyncio

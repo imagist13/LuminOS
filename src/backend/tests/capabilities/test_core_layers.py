@@ -1,4 +1,4 @@
-"""P0: paths, refs, links, archive safety, store, index, resolver, view."""
+﻿"""P0: paths, refs, links, archive safety, store, index, resolver, view."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ def _zip(files: dict, root: str = "") -> bytes:
 
 
 def test_store_is_disabled_without_root(monkeypatch):
-    monkeypatch.delenv("HUGAGENT_CAPS_ROOT", raising=False)
+    monkeypatch.delenv("LUMINOS_CAPS_ROOT", raising=False)
     assert not paths.capabilities_enabled()
     with pytest.raises(paths.CapabilityStoreDisabled):
         paths.require_root()

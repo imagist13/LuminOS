@@ -1,4 +1,4 @@
-"""Declarative permission gateway for explicitly governed agent tools.
+﻿"""Declarative permission gateway for explicitly governed agent tools.
 
 The module separates four concerns that used to be embedded in individual
 tools:
@@ -10,7 +10,7 @@ tools:
 
 Tools absent from the registry retain their existing execution behavior.  For
 registered tools, AgentScope's own permission engine remains the coarse
-framework admission layer while this gateway owns HugAgentOS's resource-level
+framework admission layer while this gateway owns LuminOS's resource-level
 decisions for built-in tools (local host paths/commands and My Space writes).
 MCP tools are temporarily trusted and stay outside this registry.
 """

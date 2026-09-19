@@ -1,4 +1,4 @@
-"""Actual upload/edit/disable/delete routes must publish the desktop installation."""
+﻿"""Actual upload/edit/disable/delete routes must publish the desktop installation."""
 
 import io
 import zipfile
@@ -17,7 +17,7 @@ def local_client(index_db, caps_root, tmp_path, monkeypatch):
     with index_db() as db:
         AdminSkill.__table__.create(db.get_bind(), checkfirst=True)
     monkeypatch.setattr("core.db.engine.SessionLocal", index_db)
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "test-config-only")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "test-config-only")
     monkeypatch.setenv("SANDBOX_SKILLS_DIR", str(tmp_path / "workspace" / "skills"))
     monkeypatch.setattr(skills, "builtin_candidates", lambda: [])
     monkeypatch.setattr("core.services.desktop_cloud_bridge.get_state", lambda: None)

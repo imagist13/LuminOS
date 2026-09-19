@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Edit a chat message stored in the `chat_messages` table.
 
 Usage (from repo root):
@@ -9,7 +9,7 @@ Usage (from repo root):
     PYTHONPATH=src/backend python src/backend/scripts/edit_chat_message.py delete --message-id <message_id>
 
 Or inside the backend container (backend source is mounted at /app/src/backend):
-    docker exec -it hugagent-backend python /app/src/backend/scripts/edit_chat_message.py list --chat-id xxx
+    docker exec -it luminos-backend python /app/src/backend/scripts/edit_chat_message.py list --chat-id xxx
 
 Notes:
     - Updating `content` keeps the original `message_id` so frontend citation /

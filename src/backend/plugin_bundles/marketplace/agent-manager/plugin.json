@@ -1,13 +1,13 @@
-{
+﻿{
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "agent-manager",
   "version": "1.0.0",
   "description": "管子智能体（可被指派任务的助手角色）：增删改、启停、从市场安装、申请上架。用户说「建个专门做 X 的助手/智能体」「改一下我那个智能体」「我有哪些智能体」时加载。只管智能体本身；技能归 skill-manager，插件归 plugin-manager。",
   "author": {
-    "name": "HugAgentOS"
+    "name": "LuminOS"
   },
   "extensions": {
-    "org.hugagent": {
+    "org.luminos": {
       "mcp": {
         "agent_manager": {
           "display_name": "智能体管理",

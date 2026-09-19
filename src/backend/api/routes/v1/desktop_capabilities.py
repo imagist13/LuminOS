@@ -1,4 +1,4 @@
-"""本机能力安装接口（桌面双端的本机后端侧）。
+﻿"""本机能力安装接口（桌面双端的本机后端侧）。
 
   GET  /v1/desktop/capabilities/installations      账号意图 + 设备状态 + 本轮解析结果
   POST /v1/desktop/capabilities/sync               同步云端清单并把缺的文件准备好
@@ -34,7 +34,7 @@ def _require_desktop_store() -> None:
     if not bridge_enabled():
         raise HTTPException(status_code=403, detail="仅桌面双端本机后端可用")
     if not capabilities_enabled():
-        raise HTTPException(status_code=403, detail="本机未配置能力文件存储（HUGAGENT_CAPS_ROOT）")
+        raise HTTPException(status_code=403, detail="本机未配置能力文件存储（LUMINOS_CAPS_ROOT）")
 
 
 def _authorized_profile(user_id: str) -> Optional[str]:

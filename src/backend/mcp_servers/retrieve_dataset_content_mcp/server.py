@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """MCP server exposing tools: retrieve_dataset_content & retrieve_local_kb.
 
 Supports two transports:
@@ -18,7 +18,7 @@ from typing import Any, Dict, Optional
 
 from mcp.server.fastmcp import Context, FastMCP
 
-mcp = FastMCP("hugagent-retrieve-dataset-content")
+mcp = FastMCP("luminos-retrieve-dataset-content")
 _LOGGER = logging.getLogger(__name__)
 
 

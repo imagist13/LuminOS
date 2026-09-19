@@ -1,4 +1,4 @@
-"""Health-check, readiness, and liveness endpoints."""
+﻿"""Health-check, readiness, and liveness endpoints."""
 
 from datetime import datetime
 
@@ -28,7 +28,7 @@ async def health_check():
     """
     return HealthResponse(
         status="healthy",
-        service="hugagent",
+        service="luminos",
         timestamp=datetime.now().isoformat(),
     )
 

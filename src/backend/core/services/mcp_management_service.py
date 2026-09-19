@@ -1,4 +1,4 @@
-"""Shared MCP mutation helpers used by admin and self-service routes."""
+﻿"""Shared MCP mutation helpers used by admin and self-service routes."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ _PROBE_TIMEOUT_S = 10.0
 # a local stdio server before a probe may call the endpoint unreachable.
 _REMOTE_PROBE_TIMEOUT_S = 60.0
 _ENC_PREFIX = "enc:v1:"
-_RUNTIME_SECRET_PREFIX = "__hugagent_runtime_secret__"
+_RUNTIME_SECRET_PREFIX = "__luminos_runtime_secret__"
 _URL_OVERRIDE_STORAGE_KEY = f"{_RUNTIME_SECRET_PREFIX}url"
 _QUERY_SECRET_STORAGE_PREFIX = f"{_RUNTIME_SECRET_PREFIX}query__"
 _OAUTH_BUNDLE_STORAGE_KEY = f"{_RUNTIME_SECRET_PREFIX}oauth_bundle"

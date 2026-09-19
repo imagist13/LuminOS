@@ -1,4 +1,4 @@
-"""桌面双端：云端技能清单同步 + 按需准备（存储层 / 安装索引 / 运行视图）。
+﻿"""桌面双端：云端技能清单同步 + 按需准备（存储层 / 安装索引 / 运行视图）。
 
 桥激活后，本模块随 MCP manifest 的同一轮询、同一枚 capability token 拉取
 云端技能清单（``/v1/desktop/capability/skills/manifest``），把它写成**账号
@@ -133,7 +133,7 @@ def sync_blocking(state: Dict[str, Any]) -> None:
     global _manifest, _error
     if not capabilities_enabled():
         with _lock:
-            _error = "capability store disabled (HUGAGENT_CAPS_ROOT unset)"
+            _error = "capability store disabled (LUMINOS_CAPS_ROOT unset)"
         return
     with _sync_lock:
         try:

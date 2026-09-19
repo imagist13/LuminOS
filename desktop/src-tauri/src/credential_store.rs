@@ -1,4 +1,4 @@
-//! OS credential storage. No plaintext fallback and no secret command-line arguments.
+﻿//! OS credential storage. No plaintext fallback and no secret command-line arguments.
 use sha2::{Digest, Sha256};
 use std::path::Path;
 
@@ -17,7 +17,7 @@ pub fn account_key(config_dir: &Path, server_base: &str) -> String {
     hash.update(path.to_string_lossy().as_bytes());
     hash.update([0]);
     hash.update(server_base.trim_end_matches('/').as_bytes());
-    format!("HugAgentOS/session/{:x}", hash.finalize())
+    format!("LuminOS/session/{:x}", hash.finalize())
 }
 impl CredentialStore for SystemCredentialStore {
     fn read(&self, key: &str) -> Result<Option<String>, String> {
@@ -131,7 +131,7 @@ mod platform {
         ffi::{c_char, c_void},
         ptr,
     };
-    const SERVICE: &[u8] = b"HugAgentOS Desktop";
+    const SERVICE: &[u8] = b"LuminOS Desktop";
     const NOT_FOUND: i32 = -25300;
     #[link(name = "Security", kind = "framework")]
     extern "C" {
@@ -270,7 +270,7 @@ mod platform {
     }
     pub fn read(key: &str) -> Result<Option<String>, String> {
         let output = command()
-            .args(["lookup", "service", "HugAgentOS", "account", key])
+            .args(["lookup", "service", "LuminOS", "account", key])
             .output()
             .map_err(|_| "System Secret Service is unavailable".to_string())?;
         if !output.status.success() {
@@ -284,9 +284,9 @@ mod platform {
         let mut child = command()
             .args([
                 "store",
-                "--label=HugAgentOS desktop session",
+                "--label=LuminOS desktop session",
                 "service",
-                "HugAgentOS",
+                "LuminOS",
                 "account",
                 key,
             ])
@@ -317,7 +317,7 @@ mod platform {
     }
     pub fn delete(key: &str) -> Result<(), String> {
         let status = command()
-            .args(["clear", "service", "HugAgentOS", "account", key])
+            .args(["clear", "service", "LuminOS", "account", key])
             .stdout(Stdio::null())
             .status()
             .map_err(|_| "System Secret Service is unavailable".to_string())?;

@@ -1,4 +1,4 @@
----
+﻿---
 name: plugin-creator
 description: 从零攒一个插件包，或把一个 web 链接上的插件下载下来导入。当用户说"照着这个网页做个插件"、"把我这几个技能打包成插件"、"帮我做一个插件"、"这个链接的插件帮我装上"、或需要把一组配套的技能与工具打成可安装可卸载的整体时，务必使用本技能。它教你插件包的目录结构、plugin.json 怎么写、怎么自检、怎么通过 import_plugin 工具落库。
 ---
@@ -44,7 +44,7 @@ my-plugin/
   "description": "一句话说清这个插件给用户带来什么能力。",
   "author": { "name": "……" },
   "extensions": {
-    "org.hugagent": {
+    "org.luminos": {
       "mcp": {
         "my_server": {
           "display_name": "界面上显示的名字",
@@ -63,8 +63,8 @@ my-plugin/
 
 - `name` 就是 slug：**小写字母/数字/连字符**，会被用来生成安装 id，别用中文和空格。
 - 标准清单本身**不放展示字段**（显示名、分类、图标属于界面配置，由平台侧维护）；
-  平台专有字段一律放进 `extensions["org.hugagent"]`。
-- `extensions["org.hugagent"].mcp.<服务名>` 里的 `display_name` / `description` / `tools`
+  平台专有字段一律放进 `extensions["org.luminos"]`。
+- `extensions["org.luminos"].mcp.<服务名>` 里的 `display_name` / `description` / `tools`
   会覆盖补全到对应的 MCP 服务上，**服务名必须和 `mcp.json` 里的键一致**，否则贴不上去。
 - 需要用户填凭据时，在扩展段里写 `required_secrets`（字符串数组），
   安装时平台会据此向用户索要。

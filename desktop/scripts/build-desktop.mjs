@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+﻿import { spawnSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,7 +20,7 @@ const result = spawnSync(process.execPath, [cli, "build", ...tauriArgs], {
   cwd: desktopDir,
   env: {
     ...process.env,
-    HUGAGENT_DESKTOP_BUNDLE: flavor,
+    LUMINOS_DESKTOP_BUNDLE: flavor,
     ...(hybridOnly ? { JX_DESKTOP_HYBRID_ONLY: "1" } : {}),
   },
   stdio: "inherit",

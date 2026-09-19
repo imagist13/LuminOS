@@ -1,4 +1,4 @@
-/xdevfiles
+﻿/xdevfiles
 
 # Runtime-generated catalog (synced from DB + filesystem at startup)
 src/backend/configs/catalog.json
@@ -93,8 +93,8 @@ docker-compose.override.yml
 *.db
 *.sqlite
 *.sqlite3
-hugagent_dev.db
-hugagent_test.db
+luminos_dev.db
+luminos_test.db
 
 # Content snapshots (data exports — not source)
 src/backend/scripts/exported/
@@ -138,8 +138,8 @@ AGENTS.md
 # images
 img/
 
-# hugagent skills
-.hugagent/
+# luminos skills
+.luminos/
 
 # codex
 .codex

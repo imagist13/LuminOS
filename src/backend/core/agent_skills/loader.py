@@ -1,4 +1,4 @@
-"""Multi-source skill loader with backend abstraction."""
+﻿"""Multi-source skill loader with backend abstraction."""
 
 from __future__ import annotations
 
@@ -88,8 +88,8 @@ class MultiSourceSkillLoader:
 
     This loader uses the backend abstraction layer to support loading skills from:
     - Built-in skills (skill_bundles/)
-    - User skills (~/.hugagent/skills/)
-    - Project skills (.hugagent/skills/)
+    - User skills (~/.luminos/skills/)
+    - Project skills (.luminos/skills/)
 
     Higher priority sources override lower priority sources for conflicting skill IDs.
     """

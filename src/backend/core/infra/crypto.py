@@ -1,4 +1,4 @@
-"""Application-layer symmetric encryption helper (encrypt sensitive config/credentials before persisting).
+﻿"""Application-layer symmetric encryption helper (encrypt sensitive config/credentials before persisting).
 
 Currently used for the email plugin's authorization code (IMAP/SMTP app
 password) — it must be encrypted before being written to
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 # Local-dev fallback key: used only when neither EMAIL_SECRET_KEY nor ADMIN_TOKEN is configured; emits a warning.
 # In production always configure EMAIL_SECRET_KEY (or at least ADMIN_TOKEN), otherwise moving/reinstalling machines makes old ciphertext undecryptable.
-_DEV_FALLBACK = "hugagent-email-dev-secret-please-override"
+_DEV_FALLBACK = "luminos-email-dev-secret-please-override"
 _warned = False
 
 

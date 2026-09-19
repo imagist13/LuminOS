@@ -1,4 +1,4 @@
-"""File-content CAS and credential transactions use only temporary config/secret data."""
+﻿"""File-content CAS and credential transactions use only temporary config/secret data."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from core.capabilities import credentials, mcp_json
 
 @pytest.fixture(autouse=True)
 def fake_credentials(monkeypatch, caps_root):
-    monkeypatch.setenv("HUGAGENT_CREDENTIAL_BACKEND", "memory")
+    monkeypatch.setenv("LUMINOS_CREDENTIAL_BACKEND", "memory")
     credentials._memory_store.clear()
     yield
     credentials._memory_store.clear()

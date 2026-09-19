@@ -1,4 +1,4 @@
-"""self_verify (conversation mode) smoke test: no verify_cmd given, the worker builds /workspace/verify.sh itself.
+﻿"""self_verify (conversation mode) smoke test: no verify_cmd given, the worker builds /workspace/verify.sh itself.
 
 Verification points:
   - driver supplies self_verify with a default verify_cmd / score_regex;
@@ -6,7 +6,7 @@ Verification points:
   - with no threshold it will not call done on the first valid solution, converging via stagnation (or budget).
 
 Run (inside container):
-  docker exec hugagent-backend python -m scripts._loop_selfverify_smoke
+  docker exec luminos-backend python -m scripts._loop_selfverify_smoke
 """
 import asyncio
 import uuid

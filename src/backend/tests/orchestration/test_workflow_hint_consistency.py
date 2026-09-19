@@ -1,6 +1,6 @@
-"""工作流模式提示段必须与 run_job 的真实默认值一致。
+﻿"""工作流模式提示段必须与 run_job 的真实默认值一致。
 
-背景（HugAgentOS 线上实测，trace 82febb85）：`run_job` 的 `wait` 默认值已从 `True` 改成
+背景（LuminOS 线上实测，trace 82febb85）：`run_job` 的 `wait` 默认值已从 `True` 改成
 `False`（后台跑），工具 docstring 也跟着改了，但 `agent_factory._WORKFLOW_MODE_HINT`
 里那句"`wait=True`（默认）会一直等到作业结束"没人动。系统提示的权重压过工具 docstring，
 模型照着提示里的"默认"照抄传了 `wait=True` —— 一次 265 项的分类作业把整轮 SSE 阻塞了

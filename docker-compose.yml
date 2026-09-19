@@ -1,4 +1,4 @@
-x-logging: &id001
+﻿x-logging: &id001
   driver: json-file
   options:
     max-size: 50m
@@ -6,13 +6,13 @@ x-logging: &id001
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: hugagent-postgres
+    container_name: luminos-postgres
     logging: *id001
     environment:
       TZ: ${TZ:-Asia/Shanghai}
-      POSTGRES_DB: hugagent
-      POSTGRES_USER: hugagent_user
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-hugagent_dev_password}
+      POSTGRES_DB: luminos
+      POSTGRES_USER: luminos_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-luminos_dev_password}
       POSTGRES_INITDB_ARGS: -E UTF8 --locale=C
     volumes:
     - postgres_data:/var/lib/postgresql/data
@@ -22,15 +22,15 @@ services:
     healthcheck:
       test:
       - CMD-SHELL
-      - pg_isready -U hugagent_user -d hugagent
+      - pg_isready -U luminos_user -d luminos
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-    - hugagent-network
+    - luminos-network
   redis:
     image: redis:7-alpine
-    container_name: hugagent-redis
+    container_name: luminos-redis
     logging: *id001
     environment:
       TZ: ${TZ:-Asia/Shanghai}
@@ -48,24 +48,23 @@ services:
       timeout: 5s
       retries: 5
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
   backend:
     build:
       context: .
       dockerfile: docker/Dockerfile
       target: production
-    container_name: hugagent-backend
+    container_name: luminos-backend
     logging: *id001
     dns_opt:
     - use-vc
     environment:
       TZ: ${TZ:-Asia/Shanghai}
-      JX_EDITION: ${JX_EDITION:-ce}
-      BRAND_PRODUCT_NAME: ${BRAND_PRODUCT_NAME:-HugAgentOS}
+      BRAND_PRODUCT_NAME: ${BRAND_PRODUCT_NAME:-LuminOS}
       BRAND_ORG_NAME: ${BRAND_ORG_NAME:-}
       BRAND_POWERED_BY: ${BRAND_POWERED_BY:-true}
-      DATABASE_URL: postgresql://hugagent_user:${DB_PASSWORD:-hugagent_dev_password}@postgres:5432/hugagent
+      DATABASE_URL: postgresql://luminos_user:${DB_PASSWORD:-luminos_dev_password}@postgres:5432/luminos
       ENV: ${ENV:-dev}
       PORT: ${BACKEND_PORT:-3001}
       AUTH_MODE: ${AUTH_MODE:-session}
@@ -150,7 +149,7 @@ services:
       MILVUS_URL: ${MILVUS_URL:-http://milvus:19530}
       NEO4J_URL: ${NEO4J_URL:-bolt://neo4j:7687}
       NEO4J_USERNAME: ${NEO4J_USERNAME:-neo4j}
-      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-hugagent_neo4j_2026}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-luminos_neo4j_2026}
       MEMORY_RETRIEVAL_BUDGET_MS: ${MEMORY_RETRIEVAL_BUDGET_MS:-600}
       MEMORY_OUTBOX_LEASE_SECONDS: ${MEMORY_OUTBOX_LEASE_SECONDS:-120}
       MEMORY_OUTBOX_MAX_ATTEMPTS: ${MEMORY_OUTBOX_MAX_ATTEMPTS:-5}
@@ -177,7 +176,7 @@ services:
       BACKEND_INTERNAL_URL: ${BACKEND_INTERNAL_URL:-http://backend:${BACKEND_PORT:-3001}}
       BACKEND_INTERNAL_TOKEN: ${BACKEND_INTERNAL_TOKEN:-}
       HOST_REPO_PATH: ${HOST_REPO_PATH:-/app/repo}
-      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-hugagent}
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME:-luminos}
     volumes:
     - ./src/backend:/app/src/backend
     - ./alembic.ini:/app/alembic.ini:ro
@@ -211,19 +210,19 @@ services:
       retries: 3
       start_period: 40s
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
   mcp:
     build:
       context: .
       dockerfile: docker/Dockerfile.mcp
-    container_name: hugagent-mcp
+    container_name: luminos-mcp
     logging: *id001
     dns_opt:
     - use-vc
     environment:
       TZ: ${TZ:-Asia/Shanghai}
-      DATABASE_URL: postgresql://hugagent_user:${DB_PASSWORD:-hugagent_dev_password}@postgres:5432/hugagent
+      DATABASE_URL: postgresql://luminos_user:${DB_PASSWORD:-luminos_dev_password}@postgres:5432/luminos
       STORAGE_TYPE: ${STORAGE_TYPE:-local}
       STORAGE_PATH: /app/storage
       MODEL_URL: ${MODEL_URL:-}
@@ -274,13 +273,13 @@ services:
       retries: 3
       start_period: 60s
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
   dbhub:
     profiles:
     - dbhub
     image: bytebase/dbhub:latest
-    container_name: hugagent-dbhub
+    container_name: luminos-dbhub
     logging: *id001
     command:
     - --transport
@@ -296,13 +295,13 @@ services:
     volumes:
     - ./docker/dbhub:/config:ro
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
   es-mcp:
     profiles:
     - dbhub
     image: docker.elastic.co/mcp/elasticsearch:latest
-    container_name: hugagent-es-mcp
+    container_name: luminos-es-mcp
     logging: *id001
     command:
     - http
@@ -312,13 +311,13 @@ services:
     - path: ./docker/dbhub/es.env
       required: false
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
   script-runner:
     build:
       context: .
       dockerfile: docker/Dockerfile.script-runner
-    container_name: hugagent-script-runner
+    container_name: luminos-script-runner
     logging: *id001
     environment:
       TZ: ${TZ:-Asia/Shanghai}
@@ -351,7 +350,7 @@ services:
       timeout: 5s
       retries: 3
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
   frontend:
     build:
@@ -360,10 +359,9 @@ services:
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL}
         SSO_LOGIN_URL: ${SSO_LOGIN_URL:-}
-        VITE_EDITION: ${VITE_EDITION:-ce}
         VITE_DEFAULT_LANGUAGE: ${VITE_DEFAULT_LANGUAGE:-zh-CN}
         VITE_UPLOAD_MAX_MB: ${UPLOAD_MAX_MB:-50}
-    container_name: hugagent-frontend
+    container_name: luminos-frontend
     logging: *id001
     environment:
       TZ: ${TZ:-Asia/Shanghai}
@@ -388,11 +386,11 @@ services:
       timeout: 10s
       retries: 3
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
   etcd:
     image: quay.io/coreos/etcd:v3.5.5
-    container_name: hugagent-etcd
+    container_name: luminos-etcd
     logging: *id001
     environment:
       TZ: ${TZ:-Asia/Shanghai}
@@ -413,13 +411,13 @@ services:
       timeout: 20s
       retries: 3
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
     profiles:
     - mem0
   minio:
     image: minio/minio:RELEASE.2023-03-13T19-46-17Z
-    container_name: hugagent-minio
+    container_name: luminos-minio
     logging: *id001
     environment:
       TZ: ${TZ:-Asia/Shanghai}
@@ -438,13 +436,13 @@ services:
       timeout: 20s
       retries: 3
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
     profiles:
     - mem0
   milvus:
     image: milvusdb/milvus:v2.5.4
-    container_name: hugagent-milvus
+    container_name: luminos-milvus
     logging: *id001
     command:
     - milvus
@@ -474,17 +472,17 @@ services:
       timeout: 20s
       retries: 3
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
     profiles:
     - mem0
   neo4j:
     image: neo4j:5.15-community
-    container_name: hugagent-neo4j
+    container_name: luminos-neo4j
     logging: *id001
     environment:
       TZ: ${TZ:-Asia/Shanghai}
-      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-hugagent_neo4j_2026}
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-luminos_neo4j_2026}
       NEO4J_PLUGINS: '["apoc"]'
       NEO4J_dbms_security_procedures_unrestricted: apoc.*
     volumes:
@@ -500,18 +498,18 @@ services:
       - -u
       - neo4j
       - -p
-      - ${NEO4J_PASSWORD:-hugagent_neo4j_2026}
+      - ${NEO4J_PASSWORD:-luminos_neo4j_2026}
       - RETURN 1
       interval: 30s
       timeout: 10s
       retries: 5
     networks:
-    - hugagent-network
+    - luminos-network
     restart: unless-stopped
     profiles:
     - mem0
 networks:
-  hugagent-network:
+  luminos-network:
     driver: bridge
 volumes:
   postgres_data: null

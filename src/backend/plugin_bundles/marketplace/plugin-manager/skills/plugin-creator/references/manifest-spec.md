@@ -1,4 +1,4 @@
-# plugin.json / mcp.json 字段速查
+﻿# plugin.json / mcp.json 字段速查
 
 ## 兼容的三种包格式
 
@@ -6,7 +6,7 @@
 
 | 格式 | 清单位置 | 说明 |
 | --- | --- | --- |
-| **原生**（推荐） | 包根 `plugin.json` | Agent Plugins 标准包，平台字段放 `extensions["org.hugagent"]` |
+| **原生**（推荐） | 包根 `plugin.json` | Agent Plugins 标准包，平台字段放 `extensions["org.luminos"]` |
 | Claude Code | `.claude-plugin/plugin.json` | 兼容布局 |
 | Codex | 其约定的清单文件 | 兼容布局，图标可从 `interface.composerIcon` 读 |
 
@@ -20,16 +20,16 @@
 | `version` | 建议 | 缺省按 `1.0.0` |
 | `description` | ✅ | 用户在插件市场看到的说明。空着等于没写 |
 | `author` | 建议 | `{"name": "……"}` |
-| `extensions["org.hugagent"]` | 视情况 | 平台专有字段都放这里，见下 |
+| `extensions["org.luminos"]` | 视情况 | 平台专有字段都放这里，见下 |
 
 **注意**：标准清单**不携带展示字段**（`display_name` / `category` / `icon`）——
 这些属于界面配置，由平台侧维护和覆盖。导入的老包若在顶层写了这些，仍会被兼容读取。
 
-## extensions["org.hugagent"] 里能放什么
+## extensions["org.luminos"] 里能放什么
 
 ```json
 "extensions": {
-  "org.hugagent": {
+  "org.luminos": {
     "mcp": {
       "<和 mcp.json 里完全一致的服务名>": {
         "display_name": "界面显示名",

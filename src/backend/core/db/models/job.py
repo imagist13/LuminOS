@@ -1,4 +1,4 @@
-"""SQLAlchemy ORM models — 作业编排运行时（Job Runtime）。
+﻿"""SQLAlchemy ORM models — 作业编排运行时（Job Runtime）。
 
 一个 **job** 是「对 N 个同构工作项批量作业」的一次执行：主对话智能体写一段作业脚本，
 脚本跑在沙箱里（普通 Python 进程，拥有文件/网络/并发），需要模型判断时通过带 job token
@@ -33,7 +33,7 @@ def _utcnow() -> datetime:
     ⚠️ 这里**不能**用 `datetime.utcnow`：它给的是 naive 值，写进 `TIMESTAMP(timezone=True)`
     时由 PostgreSQL 按**会话时区**解释。生产/测试机容器都是 `TZ=Asia/Shanghai`，于是
     naive 的 UTC 时刻被当成 +08 存下来，落库瞬间就比真实时刻早 8 小时——状态条上一条刚
-    提交的作业因此显示「已运行 8 小时」（实测于 HugAgentOS 测试机）。带 tzinfo 的值不受
+    提交的作业因此显示「已运行 8 小时」（实测于 LuminOS 测试机）。带 tzinfo 的值不受
     会话时区影响，写进去是哪个时刻读出来就是哪个时刻。
     """
     return datetime.now(timezone.utc)

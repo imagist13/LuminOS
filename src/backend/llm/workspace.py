@@ -1,4 +1,4 @@
-"""Per-run workspace state for the ``pin_to_workspace`` tool.
+﻿"""Per-run workspace state for the ``pin_to_workspace`` tool.
 
 Strict mode: artifacts produced by tools are **hidden by default**. The
 only way a generated file reaches the assistant message (and therefore
@@ -36,7 +36,7 @@ class _WorkspaceState(TypedDict, total=False):
 
 
 _workspace_var: ContextVar[Optional[_WorkspaceState]] = ContextVar(
-    "hugagent_workspace_state", default=None,
+    "luminos_workspace_state", default=None,
 )
 
 

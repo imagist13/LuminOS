@@ -1,4 +1,4 @@
-"""Stored package files stay inside their root and retain portable file names."""
+﻿"""Stored package files stay inside their root and retain portable file names."""
 
 import io
 import stat
@@ -43,7 +43,7 @@ def test_store_rejects_redirected_parent(tmp_path, monkeypatch, level):
     link = root / level
     link.parent.mkdir(parents=True, exist_ok=True)
     link.symlink_to(outside, target_is_directory=True)
-    monkeypatch.setenv("HUGAGENT_CAPS_ROOT", str(root))
+    monkeypatch.setenv("LUMINOS_CAPS_ROOT", str(root))
     with pytest.raises(IntegrityFailed):
         store.write_from_files("skill", "local", "item", "a" * 12, {"SKILL.md": "content"})
     assert list(outside.iterdir()) == []

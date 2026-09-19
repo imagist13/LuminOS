@@ -1,4 +1,4 @@
-"""桌面双端：云端智能体 / 插件定义的清单同步与落盘。
+﻿"""桌面双端：云端智能体 / 插件定义的清单同步与落盘。
 
 与技能同一轮询、同一枚 capability token。两类都是纯定义（agent.json +
 instructions.md / plugin.json），没有脚本、没有二进制、没有运行依赖，所以清单
@@ -217,7 +217,7 @@ def sync_kind(kind: str, state: Dict[str, Any]) -> bool:
     """Fetch + reconcile one kind; returns whether anything changed."""
     if not capabilities_enabled():
         with _lock:
-            _errors[kind] = "capability store disabled (HUGAGENT_CAPS_ROOT unset)"
+            _errors[kind] = "capability store disabled (LUMINOS_CAPS_ROOT unset)"
         return False
     try:
         from core.services.desktop_cloud_bridge import account_scope

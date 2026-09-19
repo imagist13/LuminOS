@@ -1,4 +1,4 @@
-"""Agent factory - creates AgentScope agents with pluggable configuration.
+﻿"""Agent factory - creates AgentScope agents with pluggable configuration.
 
 This module is separated from core.chat.agent to avoid circular dependencies:
 - routing modules can import from this factory
@@ -125,7 +125,7 @@ _WORKFLOW_MODE_HINT = (
     "\n"
     "### 怎么做（三步）\n"
     "1. 用 `write` 把作业脚本写进沙箱（例如 `/workspace/jobs/fill.py`）。脚本是普通 Python，"
-    "开头 `from hugagent_job import ledger, agent, job, log`，SDK 由系统注入：\n"
+    "开头 `from luminos_job import ledger, agent, job, log`，SDK 由系统注入：\n"
     "   - `ledger.seed(items)` 建台账（每项给 key 与 payload 两个字段），按 key 幂等；\n"
     "   - `job.map(items, fn, concurrency=8)` 并发跑，**fn 返回 dict 会自动逐项落账**"
     "（返回 None 表示你自己 update 过了；抛异常自动记 failed）；\n"
@@ -3080,7 +3080,7 @@ async def create_agent_executor(
     # main agent fenced.
     _UNBOUNDED_ITERS = 100_000
     _DEFAULT_SUBAGENT_ITERS = 10
-    _agent_name = "hugagent_agent"
+    _agent_name = "luminos_agent"
     _max_iters = _UNBOUNDED_ITERS
     if max_iters is not None:
         _max_iters = max_iters

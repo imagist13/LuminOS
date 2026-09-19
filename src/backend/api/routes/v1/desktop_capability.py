@@ -1,4 +1,4 @@
-"""桌面双端能力桥 API（云端侧 + 本机侧共用一个路由文件，各端点自行守门）。
+﻿"""桌面双端能力桥 API（云端侧 + 本机侧共用一个路由文件，各端点自行守门）。
 
 云端侧（部署在云端 / 预发 / 生产后端）：
   POST /v1/desktop/capability/token                  会话换取短时 capability token
@@ -21,7 +21,7 @@
 - 网关按「该用户当前有效能力集」授权 server_id，未命中一律 404（不区分
   不存在/无权）；身份头由网关覆写，客户端伪造的 X-Current-User-Id 不生效；
 - cloud-bridge 接收端只认桌面壳 Bearer 进程秘密，不以用户管理权限替代；
-  仅在桌面桥进程（HUGAGENT_DESKTOP_BRIDGE_SECRET 已注入）下开放，
+  仅在桌面桥进程（LUMINOS_DESKTOP_BRIDGE_SECRET 已注入）下开放，
   浏览器 Origin 请求拒绝，云端部署恒 403。
 """
 
@@ -329,7 +329,7 @@ _DROP_REQUEST_HEADERS = {
     "x-desktop-bridge",
     "x-desktop-bridge-user",
     "x-desktop-device-id",
-    "x-hugagent-target",
+    "x-luminos-target",
     # 逐跳 / 传输层头，由 httpx 按新连接重建
     "host",
     "content-length",

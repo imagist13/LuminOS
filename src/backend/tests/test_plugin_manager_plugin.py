@@ -1,4 +1,4 @@
-"""plugin-manager plugin self-contained tests: plugin persistence + all 7 MCP verbs end to end.
+﻿"""plugin-manager plugin self-contained tests: plugin persistence + all 7 MCP verbs end to end.
 
 Coverage targets (matching the goal "search, install, import, enable/disable, uninstall plugins"):
 - Installing the plugin-manager plugin → AdminSkill(plugin-creator) + AdminMcpServer(plugin_manager)
@@ -106,7 +106,7 @@ def test_bundle_manifest_is_wellformed():
     mcp_json = json.loads((BUNDLE_DIR / "mcp.json").read_text(encoding="utf-8"))
 
     assert manifest["name"] == "plugin-manager"
-    ext_mcp = manifest["extensions"]["org.hugagent"]["mcp"]
+    ext_mcp = manifest["extensions"]["org.luminos"]["mcp"]
     assert set(ext_mcp) == set(mcp_json["mcpServers"]), "扩展段的服务名必须与 mcp.json 一一对应"
     assert mcp_json["mcpServers"]["plugin_manager"]["url"] == "http://mcp:9116/mcp/"
 

@@ -1,4 +1,4 @@
-"""Desktop token contract; synthetic memory sessions and a fixed fake signing key only."""
+﻿"""Desktop token contract; synthetic memory sessions and a fixed fake signing key only."""
 
 from __future__ import annotations
 
@@ -278,7 +278,7 @@ def test_bridge_control_requires_shell_secret_even_if_config_permission_is_grant
 ):
     from core.services import desktop_cloud_bridge as bridge
 
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
     calls = []
     monkeypatch.setattr(bridge, "set_state", lambda *a, **kw: calls.append("set"))
     monkeypatch.setattr(bridge, "clear_state", lambda: calls.append("clear"))
@@ -303,7 +303,7 @@ def test_bridge_control_requires_shell_secret_even_if_config_permission_is_grant
 def test_bridge_control_accepts_direct_shell_for_set_and_clear(monkeypatch):
     from core.services import desktop_cloud_bridge as bridge
 
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
     calls = []
     monkeypatch.setattr(
         bridge, "set_state", lambda *a, **kw: calls.append(("set", kw["device_id"]))
@@ -383,5 +383,5 @@ def test_next_dispatch_checkpoint_stops_after_logout(monkeypatch):
 
 
 def test_non_ascii_invalid_control_header_is_a_denial(monkeypatch):
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "synthetic-shell-secret")
     assert not cap.is_desktop_shell_control("Bearer é", None)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """打包前自检一个插件目录的结构是否合法（导入前跑一遍，省得来回试错）。
 
 规则对齐后端导入器 core/services/plugin_importer.py：
@@ -7,7 +7,7 @@
 - name 必须匹配 ^[a-z0-9_-]{1,100}$（会被用来生成安装 id）；
 - skills/ 下每个子目录都必须有 SKILL.md，且其 frontmatter 含 name + description；
 - mcp.json（若有）必须是合法 JSON 且含 mcpServers 对象；
-- extensions["org.hugagent"].mcp 里的服务名必须能在 mcp.json 里找到（否则展示元数据贴不上）；
+- extensions["org.luminos"].mcp 里的服务名必须能在 mcp.json 里找到（否则展示元数据贴不上）；
 - 包内不得有目录穿越式路径或指向包外的软链接。
 
 纯标准库，可直接在沙箱里跑：
@@ -149,17 +149,17 @@ def check_mcp(root: Path, manifest: Dict[str, Any]) -> int:
                     err(f"mcp.json 的服务「{sname}」既没有 url 也没有 command，无法连接。")
 
     # 扩展段里的展示元数据必须能对上 mcp.json 里的服务名，否则贴不上去（静默失效）。
-    ext = ((manifest.get("extensions") or {}).get("org.hugagent") or {})
+    ext = ((manifest.get("extensions") or {}).get("org.luminos") or {})
     ext_mcp = ext.get("mcp") if isinstance(ext.get("mcp"), dict) else {}
     for sname in ext_mcp:
         if sname not in servers:
             err(
-                f"extensions[org.hugagent].mcp 里写了服务「{sname}」，但 mcp.json 里没有同名服务 —— "
+                f"extensions[org.luminos].mcp 里写了服务「{sname}」，但 mcp.json 里没有同名服务 —— "
                 "展示名与工具描述会贴不上去。两边的服务名必须完全一致。"
             )
     if servers and not ext_mcp:
         warn(
-            "带了 MCP 服务但没在 extensions[org.hugagent].mcp 里写 display_name / tools 描述 —— "
+            "带了 MCP 服务但没在 extensions[org.luminos].mcp 里写 display_name / tools 描述 —— "
             "模型会缺少判断何时该调这些工具的依据。"
         )
     return len(servers)

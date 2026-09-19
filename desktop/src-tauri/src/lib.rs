@@ -1,10 +1,10 @@
-//! HugAgentOS桌面客户端（Tauri v2 瘦客户端）。
+﻿//! LuminOS桌面客户端（Tauri v2 瘦客户端）。
 //!
 //! 方案 B —— 系统浏览器跳转登录 + deep-link 唤起：
 //!   1. 启动：起本地反代（127.0.0.1:随机端口），加载已存 token；
 //!   2. 已登录 → 窗口直接加载 `http://127.0.0.1:<port>/`（前端经反代访问后端）；
 //!   3. 未登录 → 窗口加载登录卡片（初始态），用户点「开始使用」再打开**系统浏览器**到 `<server>/?desktop=1`；
-//!   4. 浏览器登录成功 → 前端换一次性 handoff 票据 → 跳 `hugagent://auth/callback?ticket=`；
+//!   4. 浏览器登录成功 → 前端换一次性 handoff 票据 → 跳 `luminos://auth/callback?ticket=`；
 //!   5. OS 唤起 App → `redeem` 票据换回真正 token → 存盘 + 反代注入 cookie → 窗口跳首页；
 //!   6. 会话过期：前端要跳外部 SSO 时被导航守卫拦下 → 清 token + 重走系统浏览器登录。
 
@@ -229,7 +229,7 @@ pub fn run() {
         // single-instance：第二次被 deep-link 拉起时，把 URL 转交给已运行实例。
         .plugin(tauri_plugin_single_instance::init(|app, argv, _cwd| {
             for arg in argv.iter() {
-                if arg.starts_with("hugagent://") {
+                if arg.starts_with("luminos://") {
                     handle_deep_link(app, arg.clone());
                 }
             }
@@ -521,7 +521,7 @@ pub fn run() {
             // Linux / Windows 开发期运行时注册协议（打包安装时由安装器注册）。
             #[cfg(any(target_os = "linux", target_os = "windows"))]
             {
-                let _ = app.deep_link().register("hugagent");
+                let _ = app.deep_link().register("luminos");
             }
 
             // 初始窗口：有 token 进首页，没有则进登录卡片「初始态」（不自动开浏览器，
@@ -1072,7 +1072,7 @@ fn build_window(app: &tauri::AppHandle, url: &str) -> tauri::Result<()> {
                         if let Some(win) = app2.get_webview_window("main") {
                             let esc = path_str.replace('\\', "\\\\").replace('\'', "\\'");
                             let _ = win.eval(&format!(
-                                "window.dispatchEvent(new CustomEvent('hugagent:local-folder',{{detail:'{esc}'}}));"
+                                "window.dispatchEvent(new CustomEvent('luminos:local-folder',{{detail:'{esc}'}}));"
                             ));
                         }
                     });
@@ -1090,7 +1090,7 @@ fn build_window(app: &tauri::AppHandle, url: &str) -> tauri::Result<()> {
                         if let Some(win) = app2.get_webview_window("main") {
                             let esc = path_str.replace('\\', "\\\\").replace('\'', "\\'");
                             let _ = win.eval(&format!(
-                                "window.dispatchEvent(new CustomEvent('hugagent:grant-folder',{{detail:'{esc}'}}));"
+                                "window.dispatchEvent(new CustomEvent('luminos:grant-folder',{{detail:'{esc}'}}));"
                             ));
                         }
                     });
@@ -1212,7 +1212,7 @@ fn handle_deep_link(app: &tauri::AppHandle, raw_url: String) {
     });
 }
 
-/// 从 `hugagent://auth/callback?ticket=XXX` 抽取 ticket。
+/// 从 `luminos://auth/callback?ticket=XXX` 抽取 ticket。
 fn parse_ticket(raw_url: &str) -> Option<String> {
     let parsed = url::Url::parse(raw_url).ok()?;
     parsed

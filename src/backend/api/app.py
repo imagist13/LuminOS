@@ -1,4 +1,4 @@
-"""FastAPI application for HugAgentOS.
+﻿"""FastAPI application for LuminOS.
 
 This module is the slim orchestrator: it creates the FastAPI instance,
 wires up middleware / error-handlers / routers, and defines lifecycle
@@ -279,7 +279,7 @@ def _docs_title() -> str:
     """Title for the docs pages (Swagger / ReDoc) and OpenAPI info.title — fetched
     live from the admin-platform config (product_name + API-docs label),
     removing the hard-coded brand. Falls back to app.title when the DB read
-    fails (already the env brand, no literal "HugAgentOS")."""
+    fails (already the env brand, no literal "LuminOS")."""
     try:
         from core.content.content_blocks import get_admin_platform_info
 

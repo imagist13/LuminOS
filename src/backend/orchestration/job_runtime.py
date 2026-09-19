@@ -1,4 +1,4 @@
-"""作业编排运行时（Job Runtime）驱动。
+﻿"""作业编排运行时（Job Runtime）驱动。
 
 一个 job = 主对话智能体写的一段**作业脚本**的一次执行。脚本跑在沙箱里（普通 Python
 进程，拥有文件/网络/并发/子进程），需要模型判断时通过带 job token 的**回调**请求后端
@@ -6,7 +6,7 @@
 
 驱动职责：
 
-1. 把 SDK（``hugagent_job.py``）+ 用户脚本 + 运行器写进沙箱的 job 目录
+1. 把 SDK（``luminos_job.py``）+ 用户脚本 + 运行器写进沙箱的 job 目录
 2. 以 detached 方式启动运行器（不能同步等：沙箱 HTTP 客户端有 120s 请求超时）
 3. 轮询 DB 里的 job 状态直到终态，期间按节流发 ``sub_type=progress``
    —— 这条是喂主 run 无活动看门狗的活性信号，缺了长作业会被当成卡死强杀
@@ -69,7 +69,7 @@ def callback_base_candidates() -> List[str]:
     """沙箱回调后端的候选基址，按可靠性排序。
 
     ⚠️ 这里**不能**只有一个写死的默认值。沙箱与后端的网络关系随部署形态而变：
-    本机开发时沙箱不在 compose 网络里（只有宿主映射端口可达），而 HugAgentOS /
+    本机开发时沙箱不在 compose 网络里（只有宿主映射端口可达），而 LuminOS /
     主测试机上沙箱容器与 backend 同在一张 docker 网络（服务名可达，
     ``host.docker.internal`` 反而**解析不了**）。写死宿主的后果实测过：runner 起来后
     第一发回调就 ``Name or service not known`` 当场死掉，作业永远停在 pending、
@@ -152,7 +152,7 @@ def callback_base_url() -> str:
 
 
 # ── 沙箱侧 SDK（只依赖标准库；沙箱里不保证有 httpx/requests） ──────────────
-SDK_SOURCE = r'''"""hugagent_job —— 作业脚本 SDK（由 Job Runtime 注入沙箱，请勿手工修改）。
+SDK_SOURCE = r'''"""luminos_job —— 作业脚本 SDK（由 Job Runtime 注入沙箱，请勿手工修改）。
 
 暴露三类能力，其余一切（HTTP 抓取、解析、并发、写文件）都用标准 Python 做：
 
@@ -491,7 +491,7 @@ import sys
 import time
 import traceback
 
-import hugagent_job as hj
+import luminos_job as hj
 
 
 def _report(status, error=None):
@@ -745,7 +745,7 @@ async def prepare_and_launch(
             "set -e",
             f"mkdir -p {workdir}",
             f"cd {workdir}",
-            f"echo '{_b64(SDK_SOURCE)}' | base64 -d > hugagent_job.py",
+            f"echo '{_b64(SDK_SOURCE)}' | base64 -d > luminos_job.py",
             f"echo '{_b64(_RUNNER_SOURCE)}' | base64 -d > _runner.py",
             f"echo '{_b64(script_text)}' | base64 -d > user_script.py",
             # detached：立即返回，后续状态全部由回调驱动
@@ -1106,7 +1106,7 @@ async def reap_orphan_jobs() -> int:
     为什么必须有：``drive()`` 里的所有护栏（墙钟熔断、静默熔断、runner 存活探测）都长在
     驱动协程上——驱动本身没了，护栏也一起没了。而驱动是会没的：``wait=True`` 提交的作业
     驱动挂在工具调用里，用户中止这轮对话、SSE 断掉、run 被回收，驱动就跟着被取消，作业
-    则永远停在 pending/running（实测：HugAgentOS 上一条作业 runner 早已死亡，12 分钟后
+    则永远停在 pending/running（实测：LuminOS 上一条作业 runner 早已死亡，12 分钟后
     DB 里还是 pending、无错误、无台账——状态条只能一直转圈）。启动钩子
     ``resume_running_jobs`` 只在进程重启时兜底，进程没重启就永远兜不到。
 

@@ -1,4 +1,4 @@
-"""Centralized application settings.
+﻿"""Centralized application settings.
 
 All environment variables are read here once at import time.
 Other modules should ``from core.config.settings import settings`` instead
@@ -213,12 +213,12 @@ class DatabaseSettings:
     # repo root / src/backend
     url: str = field(
         default_factory=lambda: _env(
-            "DATABASE_URL", f"sqlite:///{tempfile.gettempdir()}/hugagent.db"
+            "DATABASE_URL", f"sqlite:///{tempfile.gettempdir()}/luminos.db"
         )
     )
     sqlite_fallback_url: str = field(
         default_factory=lambda: _env(
-            "SQLITE_FALLBACK_URL", f"sqlite:///{tempfile.gettempdir()}/hugagent_dev.db"
+            "SQLITE_FALLBACK_URL", f"sqlite:///{tempfile.gettempdir()}/luminos_dev.db"
         )
     )
     echo: bool = field(default_factory=lambda: _bool(_env("DB_ECHO", "false")))
@@ -260,7 +260,7 @@ class MemorySettings:
     neo4j_url: str = field(default_factory=lambda: _env("NEO4J_URL", "bolt://neo4j:7687"))
     neo4j_username: str = field(default_factory=lambda: _env("NEO4J_USERNAME", "neo4j"))
     neo4j_password: str = field(
-        default_factory=lambda: _env("NEO4J_PASSWORD", "hugagent_neo4j_2026")
+        default_factory=lambda: _env("NEO4J_PASSWORD", "luminos_neo4j_2026")
     )
 
     # ── Layered memory additions ─────────────────────────────────
@@ -741,14 +741,14 @@ class SandboxSettings:
     cube_pool_min_idle: int = field(
         default_factory=lambda: _int(_env("CUBE_POOL_MIN_IDLE", "2"), 2)
     )
-    # Sandbox owner tag: written into metadata["hugagent-owner"], used so the
+    # Sandbox owner tag: written into metadata["luminos-owner"], used so the
     # startup orphan sweep only recognizes this environment's sandboxes.
     # CubeMaster (MVP) does not honor the sandbox TTL; a backend restart loses
     # session/pool in-memory state and orphaned sandboxes linger on the node.
     # At startup, sandboxes of this environment are listed by this tag and
     # orphans not in the registry are cleaned. When multiple environments share
-    # the same cube node, **each must set a unique value** (e.g. hugagent-dev /
-    # hugagent-test / hugagent-test), otherwise the sweep would kill other
+    # the same cube node, **each must set a unique value** (e.g. luminos-dev /
+    # luminos-test / luminos-test), otherwise the sweep would kill other
     # environments' sandboxes. Empty: metadata still writes "backend", but the
     # startup orphan sweep is **disabled** (the safe default on shared nodes).
     cube_owner_tag: str = field(default_factory=lambda: _env("CUBE_OWNER_TAG", "").strip())
@@ -796,7 +796,7 @@ class SandboxSettings:
         default_factory=lambda: _env("CUBE_BUILD_CTX_DIR", "/opt/cube-build").strip()
     )
     cube_build_image_tag: str = field(
-        default_factory=lambda: _env("CUBE_BUILD_IMAGE_TAG", "hugagent-cube-sandbox:latest").strip()
+        default_factory=lambda: _env("CUBE_BUILD_IMAGE_TAG", "luminos-cube-sandbox:latest").strip()
     )
     cube_build_registry: str = field(
         default_factory=lambda: _env("CUBE_BUILD_REGISTRY", "127.0.0.1:5000").strip()

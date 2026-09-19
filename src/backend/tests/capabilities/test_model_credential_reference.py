@@ -1,4 +1,4 @@
-"""Cloud model references are non-secret, account-bound, and refreshed per request."""
+﻿"""Cloud model references are non-secret, account-bound, and refreshed per request."""
 
 import base64
 import json
@@ -24,7 +24,7 @@ def state(monkeypatch, caps_root):
         "expires_at": 9999999999,
         "device_id": "device-a",
     }
-    monkeypatch.setenv("HUGAGENT_DESKTOP_BRIDGE_SECRET", "test-only")
+    monkeypatch.setenv("LUMINOS_DESKTOP_BRIDGE_SECRET", "test-only")
     monkeypatch.setattr(bridge, "get_state", lambda: dict(value))
     return value
 

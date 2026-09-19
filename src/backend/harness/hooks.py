@@ -1,4 +1,4 @@
-"""Ordered, explicit and framework-neutral execution hooks."""
+﻿"""Ordered, explicit and framework-neutral execution hooks."""
 
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ STAGE_MUTABLE_FIELDS: Mapping[HookStage, frozenset[str]] = MappingProxyType(
     {
         HookStage.BEFORE_RUN: frozenset(),
         HookStage.TRANSFORM_CONTEXT: frozenset({"messages", "context"}),
-        # AgentScope reaches on_model_call only after HugAgentOS has assembled and
+        # AgentScope reaches on_model_call only after LuminOS has assembled and
         # bound the execution manifest. Rewriting provider input here would make
         # the evidence bundle describe different inputs than the real request.
         HookStage.BEFORE_MODEL: frozenset(),
