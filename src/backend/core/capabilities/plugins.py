@@ -33,7 +33,9 @@ def plugin_manifest_files(definition: Dict[str, Any]) -> Dict[str, str]:
 
 
 def load_manifest(comp: store.StoredComponent) -> Dict[str, Any]:
-    return json.loads((comp.path / "plugin.json").read_text(encoding="utf-8"))
+    # ``utf-8-sig`` strips a BOM if present so files saved by tools that prepend
+    # one (Notepad on Windows, some editors) do not break JSON decoding.
+    return json.loads((comp.path / "plugin.json").read_text(encoding="utf-8-sig"))
 
 
 def cloud_binding_ids(

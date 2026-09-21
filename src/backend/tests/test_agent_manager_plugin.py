@@ -68,8 +68,8 @@ def _create(**kw):
 def test_bundle_manifest_is_wellformed():
     import json
 
-    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8"))
-    mcp_json = json.loads((BUNDLE_DIR / "mcp.json").read_text(encoding="utf-8"))
+    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8-sig"))
+    mcp_json = json.loads((BUNDLE_DIR / "mcp.json").read_text(encoding="utf-8-sig"))
 
     assert manifest["name"] == "agent-manager"
     ext_mcp = manifest["extensions"]["org.luminos"]["mcp"]
@@ -104,7 +104,7 @@ def test_routing_description_is_short_and_disambiguating():
         (BUNDLE_DIR, "智能体", ("skill-manager", "plugin-manager")),
         (BUNDLE_DIR.parent / "plugin-manager", "插件", ("skill-manager", "agent-manager")),
     ):
-        desc = json.loads((bundle / "plugin.json").read_text(encoding="utf-8"))["description"]
+        desc = json.loads((bundle / "plugin.json").read_text(encoding="utf-8-sig"))["description"]
         name = bundle.name
 
         assert len(desc) <= 160, f"{name} 路由描述 {len(desc)} 字，太长（它每轮都在提示词里）"
@@ -403,7 +403,7 @@ def test_tool_description_lists_the_real_categories():
     cats = impl.valid_categories()
     assert len(cats) == 9
 
-    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8"))
+    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8-sig"))
     tools = manifest["extensions"]["org.luminos"]["mcp"]["agent_manager"]["tools"]
     desc = next(t["description"] for t in tools if t["name"] == "submit_agent_to_market")
     doc = server.submit_agent_to_market.__doc__ or ""

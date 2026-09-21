@@ -102,8 +102,8 @@ def _stash(tar_bytes: bytes, name: str = "plugin.tgz") -> str:
 
 # ── Bundle shape ────────────────────────────────────────────────────────────
 def test_bundle_manifest_is_wellformed():
-    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8"))
-    mcp_json = json.loads((BUNDLE_DIR / "mcp.json").read_text(encoding="utf-8"))
+    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8-sig"))
+    mcp_json = json.loads((BUNDLE_DIR / "mcp.json").read_text(encoding="utf-8-sig"))
 
     assert manifest["name"] == "plugin-manager"
     ext_mcp = manifest["extensions"]["org.luminos"]["mcp"]
@@ -132,7 +132,7 @@ def test_self_slug_matches_the_bundle():
     """自卸载守卫靠 slug 比对；bundle 改名而常量没跟上，守卫就静默失效了。"""
     from mcp_servers.plugin_manager_mcp import impl
 
-    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8"))
+    manifest = json.loads((BUNDLE_DIR / "plugin.json").read_text(encoding="utf-8-sig"))
     assert impl.SELF_SLUG == manifest["name"]
 
 

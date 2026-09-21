@@ -98,7 +98,7 @@ def _admin_config_field_keys(slug: str) -> List[str]:
     if plugin_dir is None:
         return []
     try:
-        manifest = json.loads((plugin_dir / "plugin.json").read_text(encoding="utf-8"))
+        manifest = json.loads((plugin_dir / "plugin.json").read_text(encoding="utf-8-sig"))
     except (OSError, ValueError):
         return []
     admin_config = _ext_or_top(manifest, manifest_extensions(manifest), "admin_config")
