@@ -53,7 +53,11 @@ function isMockLoginUrl(url?: string | null): boolean {
 function fallbackLoginUrl(): string {
   if (SSO_LOGIN_URL && !isMockLoginUrl(SSO_LOGIN_URL)) return SSO_LOGIN_URL;
   const origin = window.location.origin;
-  return `${origin}/mock-sso/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+  // Strip any pre-existing redirect= param from the current search to prevent infinite nesting.
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.delete('redirect');
+  const cleanSearch = searchParams.toString() ? `?${searchParams.toString()}` : '';
+  return `${origin}/mock-sso/login?redirect=${encodeURIComponent(window.location.pathname + cleanSearch)}`;
 }
 
 /** Resolve the redirect-to-login URL.
@@ -314,8 +318,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       const code = params.get('code');
       const ticket = params.get('ticket');
+      const currentPath = window.location.pathname;
       // Real OAuth2 uses ?code=, local mock-SSO uses ?ticket=; both are submitted to the backend as code.
       const credentialBody = code ? { code } : ticket ? { code: ticket } : null;
+
+      // Skip session check if we are already on the mock SSO login page — the page
+      // is served by the backend and will handle the ticket exchange itself.
+      if (currentPath.startsWith('/mock-sso/login') && !credentialBody) {
+        set({ authUser: null, authChecking: false });
+        return;
+      }
 
       if (credentialBody) {
         // Strip the one-time credential before exchanging — under React

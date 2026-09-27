@@ -499,21 +499,8 @@ async def mock_legacy_login_page(
         ticket = _generate_ticket(_user_info_without_password(user))
         target = _build_redirect_target(request, redirect, ticket)
         return RedirectResponse(url=target, status_code=302)
-    # local mode no longer exposes the Mock dropdown-account page: everything converges on /login, so no entry point bounces back to the mock page.
-    # In explicit non-CE mock mode, the legacy dropdown page and its auto-login
-    # shortcut remain available for development.
-    try:
-        from core.config.settings import settings as _settings
-
-        if _settings.sso.effective_login_mode == "local":
-            login_target = (
-                f"/login?redirect={_encode_query(redirect)}"
-                if redirect and redirect != "/"
-                else "/login"
-            )
-            return RedirectResponse(url=login_target, status_code=302)
-    except Exception:
-        pass
+    # Always render the mock dropdown-account page (it's a dev/test entry point).
+    # Local-account auth is served by /login instead.
     return HTMLResponse(content=_render_legacy_mock_page(redirect, error))
 
 
