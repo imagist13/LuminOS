@@ -136,7 +136,9 @@ def detect_manifest(plugin_dir: Path) -> Tuple[str, Path]:
 
 def _read_json(path: Path) -> Dict[str, Any]:
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        # ``utf-8-sig`` transparently strips a BOM if the file was saved with one
+        # (Notepad on Windows, some editors). Files without a BOM decode normally.
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
     except Exception as exc:  # noqa: BLE001
         raise BadRequestError(message=f"清单 JSON 解析失败：{path.name}（{exc}）")
     if not isinstance(data, dict):
@@ -219,14 +221,14 @@ def _find_mcp_map(plugin_dir: Path, manifest: Dict[str, Any]) -> Dict[str, Any]:
         p = plugin_dir / fname
         if p.is_file():
             try:
-                _merge(json.loads(p.read_text(encoding="utf-8")))
+                _merge(json.loads(p.read_text(encoding="utf-8-sig")))
             except Exception as exc:  # noqa: BLE001
                 logger.warning("plugin %s broken: %s", fname, exc)
     # 2) native: mcp/servers.json (array form [{server_id, ...}])
     p2 = plugin_dir / "mcp" / "servers.json"
     if p2.is_file():
         try:
-            arr = json.loads(p2.read_text(encoding="utf-8"))
+            arr = json.loads(p2.read_text(encoding="utf-8-sig"))
             if isinstance(arr, list):
                 for item in arr:
                     if isinstance(item, dict) and item.get("server_id"):

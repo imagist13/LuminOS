@@ -733,7 +733,7 @@ def builtin_plugin_component_ids() -> Tuple[set, set]:
                 if c.is_dir() and (c / "SKILL.md").is_file():
                     skill_ids.add(c.name)
         try:
-            m = json.loads((child / "plugin.json").read_text(encoding="utf-8"))
+            m = json.loads((child / "plugin.json").read_text(encoding="utf-8-sig"))
         except Exception:  # noqa: BLE001
             m = {}
         try:
@@ -759,7 +759,7 @@ def _scan_native_manifest(plugin_dir: Path) -> Optional[Dict[str, Any]]:
     if not mp.is_file():
         return None
     try:
-        m = json.loads(mp.read_text(encoding="utf-8"))
+        m = json.loads(mp.read_text(encoding="utf-8-sig"))
     except Exception:  # noqa: BLE001
         return None
     if not isinstance(m, dict) or not m.get("name"):
@@ -1069,7 +1069,7 @@ def refresh_builtin_ui_contributions(db: Session) -> int:
             if plugin_dir is not None:
                 try:
                     manifest = json.loads(
-                        (plugin_dir / "plugin.json").read_text(encoding="utf-8")
+                        (plugin_dir / "plugin.json").read_text(encoding="utf-8-sig")
                     )
                     ui, _dropped = normalize_ui(
                         _ext_or_top(manifest, manifest_extensions(manifest), "ui")
@@ -1310,7 +1310,7 @@ def _connection_for_slug(slug: str) -> Optional[str]:
     try:
         import json
 
-        m = json.loads((plugin_dir / "plugin.json").read_text(encoding="utf-8"))
+        m = json.loads((plugin_dir / "plugin.json").read_text(encoding="utf-8-sig"))
         conn = _ext_or_top(m, manifest_extensions(m), "connection")
         return str(conn).strip() if conn else None
     except Exception:  # noqa: BLE001
@@ -1325,7 +1325,7 @@ def _has_admin_config_for_slug(slug: str) -> bool:
     try:
         import json
 
-        m = json.loads((plugin_dir / "plugin.json").read_text(encoding="utf-8"))
+        m = json.loads((plugin_dir / "plugin.json").read_text(encoding="utf-8-sig"))
         ac = _ext_or_top(m, manifest_extensions(m), "admin_config")
         return isinstance(ac, dict) and bool(ac.get("fields"))
     except Exception:  # noqa: BLE001

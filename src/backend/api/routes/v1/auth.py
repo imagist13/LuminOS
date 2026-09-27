@@ -126,9 +126,38 @@ async def sso_authorize_url():
 
 
 @router.get("/session/check", summary="检查当前会话状态")
-async def session_check(request: Request, db: Session = Depends(get_db)):
+async def session_check(request: Request, response: Response, db: Session = Depends(get_db)):
     token = request.cookies.get(settings.session.cookie_name)
     user_data = await validate_session(token) if token else None
+
+    # AUTH_MODE=mock: auto-create a mock session if no valid session exists
+    if user_data is None and settings.auth.mode == "mock":
+        from core.services import UserService
+
+        mock_info = {
+            "user_center_id": settings.auth.mock_user_id,
+            "username": settings.auth.mock_username,
+            "email": "dev@example.com",
+            "avatar_url": None,
+        }
+        user_service = UserService(db)
+        shadow = user_service.get_or_create_user_shadow(
+            user_center_id=mock_info["user_center_id"],
+            username=mock_info["username"],
+            email=mock_info.get("email"),
+            avatar_url=mock_info.get("avatar_url"),
+        )
+        session_data = {
+            "user_id": shadow.user_id,
+            "user_center_id": shadow.user_center_id,
+            "username": shadow.username,
+            "email": shadow.email,
+            "avatar_url": shadow.avatar_url,
+        }
+        mock_token = await create_session(session_data)
+        _set_session_cookie(response, mock_token)
+        return success_response(data=_serialize_user(db, session_data), message="Mock session created")
+
     if user_data is None:
         raise HTTPException(
             status_code=401,

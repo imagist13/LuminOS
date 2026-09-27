@@ -81,7 +81,19 @@ npm run dev
 ### 4. (可选) 容器化部署
 
 ```bash
-# 完整启动
+# 1. 先创建 .env（项目根目录，不是 src/backend）
+[ -f .env ] || cp .env.example .env
+
+# 2. 编辑 .env，必填以下两个变量（其他用默认值即可）：
+#    HOST_STORAGE_PATH —— 宿主机绝对路径，容器会挂载到 /app/storage
+#    VITE_API_BASE_URL —— 留空则走 docker 内部网络
+#
+#    三端示例：
+#      Linux/macOS : HOST_STORAGE_PATH=/var/lib/luminos/storage
+#      Windows     : HOST_STORAGE_PATH=C:/ProgramData/LuminOS/storage
+#      WSL         : HOST_STORAGE_PATH=/mnt/c/ProgramData/LuminOS/storage
+
+# 3. 完整启动
 docker compose up -d
 
 # 仅启动记忆系统 (mem0 + Milvus + Neo4j)

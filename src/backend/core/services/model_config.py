@@ -76,9 +76,43 @@ class ModelConfigService:
     # ── resolve ────────────────────────────────────────────────────────
 
     def resolve(self, role_key: str) -> Optional[ResolvedModelConfig]:
-        """Return config for *role_key*, or None if not assigned."""
+        """Return config for *role_key*, or None if not assigned.
+
+        Falls back to environment variables in development mode (AUTH_MODE=mock) so
+        developers don't need to configure a model via the admin UI just to test chat.
+        """
         self._maybe_refresh()
-        return self._cache.get(role_key)
+        result = self._cache.get(role_key)
+        if result is not None:
+            return result
+
+        # Dev-mode fallback: check env vars for a quick-start model
+        if role_key == "main_agent":
+            return self._resolve_dev_fallback()
+        return None
+
+    def _resolve_dev_fallback(self) -> Optional[ResolvedModelConfig]:
+        """Read model config from environment variables (dev mode only)."""
+        import os
+
+        base_url = os.getenv("DEV_MODEL_BASE_URL", "").strip()
+        api_key = os.getenv("DEV_MODEL_API_KEY", "").strip()
+        model_name = os.getenv("DEV_MODEL_NAME", "").strip()
+
+        if base_url and api_key and model_name:
+            logger.info(
+                "[ModelConfigService] Using dev fallback model: %s @ %s",
+                model_name,
+                base_url,
+            )
+            return ResolvedModelConfig(
+                base_url=base_url,
+                api_key=api_key,
+                model_name=model_name,
+                temperature=0.6,
+                provider="openai_compatible",
+            )
+        return None
 
     def resolve_provider(self, provider_id: str) -> Optional[ResolvedModelConfig]:
         """Return config for one active model provider id.

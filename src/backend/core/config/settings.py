@@ -147,7 +147,7 @@ class SSOSettings:
             return self.login_url
         mode = self.effective_login_mode
         if mode == "local":
-            return "/login"
+            return "/mock-sso/login"
         if mode == "mock":
             return "/mock-sso/login"
         # remote but no URL configured: return empty string and let the caller handle it
