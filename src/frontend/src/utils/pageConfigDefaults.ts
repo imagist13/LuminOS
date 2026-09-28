@@ -73,7 +73,7 @@ export const DEFAULT_PAGE_CONFIG: PageConfig = {
   branding: {
     product_name: 'LuminOS',
     product_subtitle: 'LuminOS AI 智能助手',
-    logo_url: '/home/header.svg',
+    logo_url: '/home/header.png',
     favicon_url: '/icon.png',
     page_title: 'LuminOS',
     hero_title: '你好，我是 LuminOS',

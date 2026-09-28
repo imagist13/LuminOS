@@ -101,7 +101,7 @@ export function Sidebar({
   // ── Page config (text and branding configurable via the admin console) ──
   const cfgProductName = usePageConfig('branding.product_name', 'LuminOS');
   const cfgProductSub = usePageConfig('branding.product_subtitle', 'LuminOS AI 智能助手');
-  const cfgLogoUrl = usePageConfig('branding.logo_url', '/home/logo.svg');
+  const cfgLogoUrl = usePageConfig('branding.logo_url', '/home/logo.png');
   const cfgBtnNewChat = usePageConfig('texts.btn_new_chat', '新建对话');
   const cfgEmptyState = usePageConfig('texts.sidebar_empty_state', '暂无对话记录');
   const cfgLogoutTitle = usePageConfig('texts.dialog_logout_confirm_title', '确认退出登录？');
